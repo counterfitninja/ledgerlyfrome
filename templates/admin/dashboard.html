@@ -1,0 +1,77 @@
+{% extends "admin/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block topbar_actions %}
+<form method="POST" action="{{ url_for('admin_generate') }}"
+      onsubmit="return confirm('Generate static site now? This may take a few seconds.')">
+  <button type="submit" class="adm-btn adm-btn-generate">⚡ Generate Static Site</button>
+</form>
+{% endblock %}
+
+{% block content %}
+
+<div class="adm-stats">
+  <div class="adm-stat">
+    <strong>{{ counts.services }}</strong>
+    <span>Services</span>
+  </div>
+  <div class="adm-stat">
+    <strong>{{ counts.testimonials }}</strong>
+    <span>Testimonials</span>
+  </div>
+  <div class="adm-stat">
+    <strong>{{ counts.faq }}</strong>
+    <span>FAQ Items</span>
+  </div>
+  <div class="adm-stat">
+    <strong>{{ counts.steps }}</strong>
+    <span>How It Works Steps</span>
+  </div>
+  <div class="adm-stat">
+    <strong>{{ counts.about_points }}</strong>
+    <span>About Points</span>
+  </div>
+</div>
+
+<div class="adm-card">
+  <div class="adm-card__title">Quick Links</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem">
+
+    <a href="{{ url_for('admin_business') }}" class="adm-btn adm-btn-outline">
+      ⚙️ Edit Business &amp; Text
+    </a>
+    <a href="{{ url_for('admin_services') }}" class="adm-btn adm-btn-outline">
+      📒 Manage Services
+    </a>
+    <a href="{{ url_for('admin_testimonials') }}" class="adm-btn adm-btn-outline">
+      ⭐ Manage Testimonials
+    </a>
+    <a href="{{ url_for('admin_faq') }}" class="adm-btn adm-btn-outline">
+      ❓ Manage FAQ
+    </a>
+    <a href="{{ url_for('admin_steps') }}" class="adm-btn adm-btn-outline">
+      🔢 How It Works
+    </a>
+    <a href="{{ url_for('admin_about') }}" class="adm-btn adm-btn-outline">
+      ℹ️ About Points
+    </a>
+
+  </div>
+</div>
+
+<div class="adm-card">
+  <div class="adm-card__title">Generate &amp; Deploy</div>
+  <p style="font-size:.92rem;color:#6b7280;margin-bottom:1.25rem;line-height:1.65">
+    Click <strong>Generate Static Site</strong> above to bake all your content into plain HTML files
+    in the <code style="background:#f3f4f6;padding:.1rem .4rem;border-radius:.3rem">_static/</code> folder.
+    You can then deploy that folder to GitHub Pages, Netlify, or any static host — no server needed.
+  </p>
+  <ul style="font-size:.88rem;color:#6b7280;line-height:2;padding-left:1.25rem">
+    <li>GitHub Pages: push <code style="background:#f3f4f6;padding:.1rem .4rem;border-radius:.3rem">_static/</code> to your <code style="background:#f3f4f6;padding:.1rem .4rem;border-radius:.3rem">gh-pages</code> branch</li>
+    <li>Netlify: drag-and-drop <code style="background:#f3f4f6;padding:.1rem .4rem;border-radius:.3rem">_static/</code> at <strong>app.netlify.com/drop</strong></li>
+    <li>Any web server: copy the folder contents to your <code style="background:#f3f4f6;padding:.1rem .4rem;border-radius:.3rem">public_html</code> folder</li>
+  </ul>
+</div>
+
+{% endblock %}

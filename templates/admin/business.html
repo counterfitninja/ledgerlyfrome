@@ -1,0 +1,92 @@
+{% extends "admin/base.html" %}
+{% block title %}Business & Text{% endblock %}
+{% block page_title %}Business &amp; Text Settings{% endblock %}
+
+{% block topbar_actions %}
+<a href="{{ url_for('index') }}" target="_blank" class="adm-btn adm-btn-outline">↗ Preview Site</a>
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+
+  <div class="adm-card">
+    <div class="adm-card__title">Business Details</div>
+    {% for key, label, ftype, help in fields if key in ['business_name','phone','email','hours','location'] %}
+    <div class="adm-form-group">
+      <label for="{{ key }}">{{ label }}</label>
+      {% if ftype == 'textarea' %}
+        <textarea id="{{ key }}" name="{{ key }}" rows="3">{{ cfg[key] }}</textarea>
+      {% else %}
+        <input type="text" id="{{ key }}" name="{{ key }}" value="{{ cfg[key] }}" />
+      {% endif %}
+      {% if help %}<p class="adm-help">{{ help }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="adm-card">
+    <div class="adm-card__title">SEO (Google / browser tab)</div>
+    {% for key, label, ftype, help in fields if key in ['meta_title','meta_description'] %}
+    <div class="adm-form-group">
+      <label for="{{ key }}">{{ label }}</label>
+      {% if ftype == 'textarea' %}
+        <textarea id="{{ key }}" name="{{ key }}" rows="3">{{ cfg[key] }}</textarea>
+      {% else %}
+        <input type="text" id="{{ key }}" name="{{ key }}" value="{{ cfg[key] }}" />
+      {% endif %}
+      {% if help %}<p class="adm-help">{{ help }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="adm-card">
+    <div class="adm-card__title">Hero Section (top of page)</div>
+    {% for key, label, ftype, help in fields if key in ['hero_heading','hero_sub','hero_badges','hero_cta1_label','hero_cta1_href','hero_cta2_label','hero_cta2_href'] %}
+    <div class="adm-form-group">
+      <label for="{{ key }}">{{ label }}</label>
+      {% if ftype == 'textarea' %}
+        <textarea id="{{ key }}" name="{{ key }}" rows="3">{{ cfg[key] }}</textarea>
+      {% else %}
+        <input type="text" id="{{ key }}" name="{{ key }}" value="{{ cfg[key] }}" />
+      {% endif %}
+      {% if help %}<p class="adm-help">{{ help }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="adm-card">
+    <div class="adm-card__title">Section Headings &amp; Sub-headings</div>
+    {% for key, label, ftype, help in fields if key in ['services_heading','services_sub','about_heading','about_sub','about_body','hiw_heading','hiw_sub','reviews_heading','reviews_sub','faq_heading','faq_sub','contact_heading','contact_sub'] %}
+    <div class="adm-form-group">
+      <label for="{{ key }}">{{ label }}</label>
+      {% if ftype == 'textarea' %}
+        <textarea id="{{ key }}" name="{{ key }}" rows="4">{{ cfg[key] }}</textarea>
+      {% else %}
+        <input type="text" id="{{ key }}" name="{{ key }}" value="{{ cfg[key] }}" />
+      {% endif %}
+      {% if help %}<p class="adm-help">{{ help }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="adm-card">
+    <div class="adm-card__title">Contact Form &amp; Footer</div>
+    {% for key, label, ftype, help in fields if key in ['tagline','footer_copy','formspree_url'] %}
+    <div class="adm-form-group">
+      <label for="{{ key }}">{{ label }}</label>
+      {% if ftype == 'textarea' %}
+        <textarea id="{{ key }}" name="{{ key }}" rows="3">{{ cfg[key] }}</textarea>
+      {% else %}
+        <input type="text" id="{{ key }}" name="{{ key }}" value="{{ cfg[key] }}" />
+      {% endif %}
+      {% if help %}<p class="adm-help">{{ help }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="adm-form-actions">
+    <button type="submit" class="adm-btn adm-btn-primary">💾 Save All Settings</button>
+  </div>
+
+</form>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+{% block title %}About Points{% endblock %}
+{% block page_title %}About — Key Points{% endblock %}
+
+{% block topbar_actions %}
+<a href="{{ url_for('admin_about_point_new') }}" class="adm-btn adm-btn-primary">+ Add Point</a>
+{% endblock %}
+
+{% block content %}
+<div class="adm-card">
+  <p style="font-size:.88rem;color:#6b7280;margin-bottom:1rem">
+    These bullet points appear in the "Why Ledgerly?" section.
+    Edit the main About text in <a href="{{ url_for('admin_business') }}">Business &amp; Text settings</a>.
+  </p>
+  {% if items %}
+  <table class="adm-list">
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Icon</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td style="color:#9ca3af;width:60px">{{ item.order }}</td>
+        <td style="font-size:1.3rem">{{ item.icon }}</td>
+        <td><strong>{{ item.title }}</strong></td>
+        <td style="font-size:.88rem;color:#6b7280">
+          {{ item.description[:80] }}{% if item.description|length > 80 %}…{% endif %}
+        </td>
+        <td>
+          <div class="adm-actions">
+            <a href="{{ url_for('admin_about_point_edit', item_id=item.id) }}"
+               class="adm-btn adm-btn-outline adm-btn-sm">Edit</a>
+            <form method="POST"
+                  action="{{ url_for('admin_about_point_delete', item_id=item.id) }}"
+                  onsubmit="return confirm('Delete this point?')">
+              <button type="submit" class="adm-btn adm-btn-danger adm-btn-sm">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color:#9ca3af;font-size:.92rem">No points yet. <a href="{{ url_for('admin_about_point_new') }}">Add one.</a></p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add .gitignore .htaccess Procfile README.md app.py egg-frometowneagles.json requirements.txt run.sh start-debug.sh startup.sh static/ templates/)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

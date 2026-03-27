@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — Ledgerly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}" />
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f0fdfa; }
+    .login-box {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: .75rem;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 4px 24px rgba(13,148,136,.1);
+    }
+    .login-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #0d9488;
+      text-align: center;
+      margin-bottom: .25rem;
+    }
+    .login-sub {
+      text-align: center;
+      font-size: .85rem;
+      color: #9ca3af;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <div class="login-logo">Ledgerly</div>
+    <div class="login-sub">Admin Panel</div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, msg in messages %}
+      <div class="adm-flash {{ category }}" style="margin-bottom:1rem">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+      <div class="adm-form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autofocus required
+               placeholder="Enter admin password" />
+      </div>
+      <button type="submit" class="adm-btn adm-btn-primary" style="width:100%;justify-content:center;padding:.75rem;margin-top:.5rem">
+        Log In
+      </button>
+    </form>
+  </div>
+</body>
+</html>

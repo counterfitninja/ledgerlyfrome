@@ -1,0 +1,59 @@
+{% extends "admin/base.html" %}
+{% block title %}Testimonials{% endblock %}
+{% block page_title %}Testimonials{% endblock %}
+
+{% block topbar_actions %}
+<a href="{{ url_for('admin_testimonial_new') }}" class="adm-btn adm-btn-primary">+ Add Testimonial</a>
+{% endblock %}
+
+{% block content %}
+<div class="adm-card">
+  {% if items %}
+  <table class="adm-list">
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Name</th>
+        <th>Review</th>
+        <th>Stars</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td style="color:#9ca3af;width:60px">{{ item.order }}</td>
+        <td>
+          <strong>{{ item.name }}</strong>
+          <div style="font-size:.82rem;color:#9ca3af">{{ item.role }}</div>
+        </td>
+        <td style="font-size:.88rem;color:#6b7280;max-width:280px">
+          "{{ item.text[:90] }}{% if item.text|length > 90 %}…{% endif %}"
+        </td>
+        <td style="color:#0d9488">{{ '★' * item.stars }}</td>
+        <td>
+          <span class="adm-badge {{ 'adm-badge-green' if item.active else 'adm-badge-gray' }}">
+            {{ 'Visible' if item.active else 'Hidden' }}
+          </span>
+        </td>
+        <td>
+          <div class="adm-actions">
+            <a href="{{ url_for('admin_testimonial_edit', item_id=item.id) }}"
+               class="adm-btn adm-btn-outline adm-btn-sm">Edit</a>
+            <form method="POST"
+                  action="{{ url_for('admin_testimonial_delete', item_id=item.id) }}"
+                  onsubmit="return confirm('Delete review from {{ item.name }}?')">
+              <button type="submit" class="adm-btn adm-btn-danger adm-btn-sm">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color:#9ca3af;font-size:.92rem">No testimonials yet. <a href="{{ url_for('admin_testimonial_new') }}">Add one.</a></p>
+  {% endif %}
+</div>
+{% endblock %}

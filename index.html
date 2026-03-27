@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- =====================================================
+       EDIT: Page title & meta description (shown in Google)
+       ===================================================== -->
+  <title>Ledgerly — Professional Bookkeeping in Frome &amp; across the UK</title>
+  <meta name="description" content="Reliable, remote bookkeeping for sole traders and small limited companies. Fixed-price packages. Based in Frome, Somerset — serving clients UK-wide." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  NAVIGATION                                      ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="#" class="nav__logo" id="nav-logo">Ledgerly</a>
+      <nav class="nav__links" id="nav-links" aria-label="Main navigation"></nav>
+      <a href="#contact" class="btn btn-primary nav__cta" id="nav-cta">Get a Free Quote</a>
+      <button class="nav__hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="navigation" aria-label="Mobile navigation"></div>
+  </header>
+
+  <main>
+
+    <!-- ╔══════════════════════════════════════════════════╗
+         ║  HERO                                            ║
+         ╚══════════════════════════════════════════════════╝ -->
+    <section class="hero" id="hero">
+      <div class="container hero__inner">
+        <h1 id="hero-heading"></h1>
+        <p class="hero__sub" id="hero-sub"></p>
+        <div class="hero__badges" id="hero-badges"></div>
+        <div class="hero__ctas" id="hero-ctas"></div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════════════╗
+         ║  SERVICES                                        ║
+         ╚══════════════════════════════════════════════════╝ -->
+    <section class="services" id="services">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-heading" id="services-heading"></h2>
+          <p class="section-sub"     id="services-sub"></p>
+        </div>
+        <div class="services__grid" id="services-grid"></div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════════════╗
+         ║  ABOUT / WHY US                                  ║
+         ╚══════════════════════════════════════════════════╝ -->
+    <section class="about" id="about">
+      <div class="container about__inner">
+        <div class="about__text">
+          <h2 class="section-heading" id="about-heading"></h2>
+          <p class="section-sub"     id="about-sub"></p>
+          <p class="about__body"     id="about-body"></p>
+          <ul class="about__points"  id="about-points"></ul>
+        </div>
+        <div class="about__visual" id="about-visual" aria-hidden="true">
+          <div class="about__stat"><strong>100%</strong><span>Remote service</span></div>
+          <div class="about__stat"><strong>UK&#8209;wide</strong><span>Coverage</span></div>
+          <div class="about__stat"><strong>Fixed</strong><span>Transparent pricing</span></div>
+          <div class="about__stat"><strong>5★</strong><span>Client reviews</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════════════╗
+         ║  HOW IT WORKS                                    ║
+         ╚══════════════════════════════════════════════════╝ -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-heading" id="hiw-heading"></h2>
+          <p class="section-sub"     id="hiw-sub"></p>
+        </div>
+        <div class="steps" id="steps"></div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════════════╗
+         ║  REVIEWS / TESTIMONIALS                          ║
+         ╚══════════════════════════════════════════════════╝ -->
+    <section class="reviews" id="reviews">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-heading" id="reviews-heading"></h2>
+          <p class="section-sub"     id="reviews-sub"></p>
+        </div>
+        <div class="reviews__grid" id="reviews-grid"></div>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════════════╗
+         ║  FAQ                                             ║
+         ╚══════════════════════════════════════════════════╝ -->
+    <section class="faq" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-heading" id="faq-heading"></h2>
+          <p class="section-sub"     id="faq-sub"></p>
+        </div>
+        <ul class="faq__list" id="faq-list"></ul>
+      </div>
+    </section>
+
+    <!-- ╔══════════════════════════════════════════════════╗
+         ║  CONTACT                                         ║
+         ╚══════════════════════════════════════════════════╝ -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-heading" id="contact-heading"></h2>
+          <p class="section-sub"     id="contact-sub"></p>
+        </div>
+        <div class="contact__inner">
+
+          <!-- Contact details -->
+          <div class="contact__info" id="contact-info">
+            <div class="contact__detail">
+              <span class="contact__detail-icon">📞</span>
+              <div>
+                <h4>Phone</h4>
+                <a id="contact-phone" href=""></a>
+              </div>
+            </div>
+            <div class="contact__detail">
+              <span class="contact__detail-icon">✉️</span>
+              <div>
+                <h4>Email</h4>
+                <a id="contact-email" href=""></a>
+              </div>
+            </div>
+            <div class="contact__detail">
+              <span class="contact__detail-icon">🕐</span>
+              <div>
+                <h4>Hours</h4>
+                <p id="contact-hours"></p>
+              </div>
+            </div>
+            <div class="contact__detail">
+              <span class="contact__detail-icon">📍</span>
+              <div>
+                <h4>Location</h4>
+                <p id="contact-location"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact form -->
+          <!-- NOTE: This form does nothing by default — connect to Formspree, Netlify Forms,
+               or similar to receive submissions. See script.js for instructions. -->
+          <div class="contact__form">
+            <form id="contact-form" novalidate>
+              <div id="form-fields"></div>
+              <button type="submit" class="btn btn-primary form-submit" id="form-submit"></button>
+            </form>
+            <div class="form-success" id="form-success">
+              ✅ Thanks! We'll be in touch within one business day.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  FOOTER                                          ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+
+        <div class="footer__brand">
+          <div class="nav__logo" id="footer-logo"></div>
+          <p id="footer-tagline"></p>
+        </div>
+
+        <div class="footer__col">
+          <h4>Services</h4>
+          <ul id="footer-services"></ul>
+        </div>
+
+        <div class="footer__col">
+          <h4>Company</h4>
+          <ul id="footer-nav"></ul>
+        </div>
+
+        <div class="footer__col">
+          <h4>Contact</h4>
+          <ul id="footer-contact"></ul>
+        </div>
+
+      </div>
+
+      <div class="footer__bottom">
+        <p id="footer-copy"></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Content data -->
+  <script src="content.js"></script>
+  <!-- App logic (renders content + interactivity) -->
+  <script src="script.js"></script>
+
+</body>
+</html>

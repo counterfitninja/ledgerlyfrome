@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Admin{% endblock %} — Ledgerly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}" />
+</head>
+<body>
+
+<!-- ── Sidebar ──────────────────────────────────────────────────────────── -->
+<aside class="adm-sidebar">
+  <div class="adm-sidebar__brand">
+    Ledgerly
+    <small>Content Admin</small>
+  </div>
+  <ul class="adm-nav">
+    <li><a href="{{ url_for('admin_dashboard') }}"
+           class="{{ 'active' if request.endpoint == 'admin_dashboard' }}">
+      <span class="icon">🏠</span> Dashboard
+    </a></li>
+    <li><a href="{{ url_for('admin_business') }}"
+           class="{{ 'active' if request.endpoint == 'admin_business' }}">
+      <span class="icon">⚙️</span> Business &amp; Text
+    </a></li>
+    <li><a href="{{ url_for('admin_services') }}"
+           class="{{ 'active' if 'service' in request.endpoint }}">
+      <span class="icon">📒</span> Services
+    </a></li>
+    <li><a href="{{ url_for('admin_testimonials') }}"
+           class="{{ 'active' if 'testimonial' in request.endpoint }}">
+      <span class="icon">⭐</span> Testimonials
+    </a></li>
+    <li><a href="{{ url_for('admin_faq') }}"
+           class="{{ 'active' if 'faq' in request.endpoint }}">
+      <span class="icon">❓</span> FAQ
+    </a></li>
+    <li><a href="{{ url_for('admin_steps') }}"
+           class="{{ 'active' if 'step' in request.endpoint }}">
+      <span class="icon">🔢</span> How It Works
+    </a></li>
+    <li><a href="{{ url_for('admin_about') }}"
+           class="{{ 'active' if 'about' in request.endpoint }}">
+      <span class="icon">ℹ️</span> About Points
+    </a></li>
+  </ul>
+  <div class="adm-sidebar__footer">
+    <a href="{{ url_for('index') }}" target="_blank">↗ View live site</a>
+    {% if session.get('admin_logged_in') %}
+    <br><a href="{{ url_for('admin_logout') }}" style="margin-top:.5rem;display:inline-block">⬡ Log out</a>
+    {% endif %}
+  </div>
+</aside>
+
+<!-- ── Main ─────────────────────────────────────────────────────────────── -->
+<div class="adm-main">
+  <div class="adm-topbar">
+    <h1>{% block page_title %}{% endblock %}</h1>
+    <div class="adm-topbar__actions">{% block topbar_actions %}{% endblock %}</div>
+  </div>
+  <div class="adm-body">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, msg in messages %}
+      <div class="adm-flash {{ category }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+</body>
+</html>

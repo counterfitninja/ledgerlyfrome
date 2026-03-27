@@ -1,0 +1,517 @@
+import os
+from collections import defaultdict
+
+from flask import (
+    Flask, render_template, request, redirect,
+    url_for, flash, abort, session,
+)
+from models import (
+    db, SiteConfig, Service, Testimonial,
+    FaqItem, HowItWorksStep, AboutPoint,
+)
+
+app = Flask(__name__)
+
+# ── Database path — reads DATABASE_PATH env var (set by Pelican) ──────────────
+_db_path = os.environ.get("DATABASE_PATH", "site.db")
+if not os.path.isabs(_db_path):
+    _db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), _db_path)
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{_db_path}"
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-change-me")
+app.config["FREEZER_DESTINATION"] = "_static"
+app.config["FREEZER_RELATIVE_URLS"] = True
+app.config["STATIC_MODE"] = False  # set to True in freeze.py
+
+# ── Admin auth ────────────────────────────────────────────────────────────────
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
+
+
+@app.before_request
+def check_admin_auth():
+    """Protect all /admin/ routes. Skipped when ADMIN_PASSWORD env var is not set (local dev)."""
+    if (
+        request.path.startswith("/admin/")
+        and request.endpoint not in ("admin_login", "admin_logout")
+        and ADMIN_PASSWORD
+        and not session.get("admin_logged_in")
+    ):
+        return redirect(url_for("admin_login", next=request.path))
+
+db.init_app(app)
+
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
+
+def get_cfg():
+    """Return all site config as a defaultdict (missing keys → empty string)."""
+    cfg = defaultdict(str)
+    for row in SiteConfig.query.all():
+        cfg[row.key] = row.value or ""
+    return cfg
+
+
+def set_cfg(key, value):
+    row = db.session.get(SiteConfig, key)
+    if row:
+        row.value = value
+    else:
+        db.session.add(SiteConfig(key=key, value=value))
+
+
+def site_context():
+    """Build the full context dict used by the public site template."""
+    cfg = get_cfg()
+    return dict(
+        cfg=cfg,
+        services=Service.query.filter_by(active=True).order_by(Service.order).all(),
+        testimonials=Testimonial.query.filter_by(active=True).order_by(Testimonial.order).all(),
+        faq_items=FaqItem.query.filter_by(active=True).order_by(FaqItem.order).all(),
+        steps=HowItWorksStep.query.order_by(HowItWorksStep.order).all(),
+        about_points=AboutPoint.query.order_by(AboutPoint.order).all(),
+    )
+
+
+# ── Public site ───────────────────────────────────────────────────────────────
+
+@app.route("/")
+def index():
+    return render_template("site/index.html", **site_context())
+
+
+@app.route("/contact/submit/", methods=["POST"])
+def contact_submit():
+    # In live Flask mode we just thank the user.
+    # TODO: integrate an email service (e.g. Flask-Mail, SendGrid) here.
+    name = request.form.get("name", "")
+    flash(f"Thanks {name}! We'll be in touch within one business day.", "success")
+    return redirect(url_for("index") + "#contact")
+
+
+# ── Admin — dashboard ─────────────────────────────────────────────────────────
+
+@app.route("/admin/login/", methods=["GET", "POST"])
+def admin_login():
+    if not ADMIN_PASSWORD:
+        return redirect(url_for("admin_dashboard"))
+    if request.method == "POST":
+        if request.form.get("password") == ADMIN_PASSWORD:
+            session["admin_logged_in"] = True
+            return redirect(request.args.get("next") or url_for("admin_dashboard"))
+        flash("Incorrect password.", "error")
+    return render_template("admin/login.html")
+
+
+@app.route("/admin/logout/")
+def admin_logout():
+    session.pop("admin_logged_in", None)
+    return redirect(url_for("admin_login"))
+
+
+@app.route("/admin/")
+def admin_dashboard():
+    counts = {
+        "services":     Service.query.count(),
+        "testimonials": Testimonial.query.count(),
+        "faq":          FaqItem.query.count(),
+        "steps":        HowItWorksStep.query.count(),
+        "about_points": AboutPoint.query.count(),
+    }
+    return render_template("admin/dashboard.html", counts=counts)
+
+
+# ── Admin — business settings ─────────────────────────────────────────────────
+
+BUSINESS_FIELDS = [
+    # (key, label, type, help_text)
+    ("business_name",     "Business Name",        "text",     ""),
+    ("meta_title",        "Page Title (SEO)",     "text",     "Shown in Google results and browser tab"),
+    ("meta_description",  "Meta Description",     "textarea", "1–2 sentence summary for Google"),
+    ("tagline",           "Tagline",              "text",     "Short phrase shown in footer"),
+    ("phone",             "Phone",                "text",     ""),
+    ("email",             "Email",                "text",     ""),
+    ("hours",             "Office Hours",         "text",     "e.g. Mon–Fri, 9am–5pm"),
+    ("location",          "Location / Area",      "text",     "e.g. Frome, Somerset — serving clients UK-wide"),
+    ("hero_heading",      "Hero Heading",         "text",     "HTML allowed — use <br> for line break"),
+    ("hero_sub",          "Hero Sub-heading",     "textarea", ""),
+    ("hero_badges",       "Hero Badges",          "text",     "Comma-separated, e.g. 100% Remote,UK-wide"),
+    ("services_heading",  "Services Heading",     "text",     ""),
+    ("services_sub",      "Services Sub-heading", "text",     ""),
+    ("about_heading",     "About Heading",        "text",     ""),
+    ("about_sub",         "About Sub-heading",    "text",     ""),
+    ("about_body",        "About Body Text",      "textarea", ""),
+    ("hiw_heading",       "How It Works Heading", "text",     ""),
+    ("hiw_sub",           "How It Works Sub",     "text",     ""),
+    ("reviews_heading",   "Reviews Heading",      "text",     ""),
+    ("reviews_sub",       "Reviews Sub-heading",  "text",     ""),
+    ("faq_heading",       "FAQ Heading",          "text",     ""),
+    ("faq_sub",           "FAQ Sub-heading",      "text",     ""),
+    ("contact_heading",   "Contact Heading",      "text",     ""),
+    ("contact_sub",       "Contact Sub-heading",  "text",     ""),
+    ("footer_copy",       "Footer Copyright",     "text",     ""),
+    ("formspree_url",     "Formspree URL",        "text",     "Paste your Formspree form URL here for static-site contact form support (e.g. https://formspree.io/f/abc123)"),
+]
+
+
+@app.route("/admin/business/", methods=["GET", "POST"])
+def admin_business():
+    if request.method == "POST":
+        for key, *_ in BUSINESS_FIELDS:
+            set_cfg(key, request.form.get(key, ""))
+        db.session.commit()
+        flash("Business settings saved.", "success")
+        return redirect(url_for("admin_business"))
+    cfg = get_cfg()
+    return render_template("admin/business.html", cfg=cfg, fields=BUSINESS_FIELDS)
+
+
+# ── Admin — services ──────────────────────────────────────────────────────────
+
+@app.route("/admin/services/")
+def admin_services():
+    items = Service.query.order_by(Service.order).all()
+    return render_template("admin/services.html", items=items)
+
+
+@app.route("/admin/services/new/", methods=["GET", "POST"])
+def admin_service_new():
+    if request.method == "POST":
+        db.session.add(Service(
+            icon=request.form.get("icon", "📒"),
+            title=request.form["title"],
+            description=request.form.get("description", ""),
+            order=int(request.form.get("order", 0)),
+            active="active" in request.form,
+        ))
+        db.session.commit()
+        flash("Service added.", "success")
+        return redirect(url_for("admin_services"))
+    return render_template("admin/item_form.html",
+        section="services", section_label="Service",
+        item=None, back_url=url_for("admin_services"),
+        fields=_service_fields(),
+    )
+
+
+@app.route("/admin/services/<int:item_id>/", methods=["GET", "POST"])
+def admin_service_edit(item_id):
+    item = Service.query.get_or_404(item_id)
+    if request.method == "POST":
+        item.icon        = request.form.get("icon", "📒")
+        item.title       = request.form["title"]
+        item.description = request.form.get("description", "")
+        item.order       = int(request.form.get("order", 0))
+        item.active      = "active" in request.form
+        db.session.commit()
+        flash("Service updated.", "success")
+        return redirect(url_for("admin_services"))
+    return render_template("admin/item_form.html",
+        section="services", section_label="Service",
+        item=item, back_url=url_for("admin_services"),
+        delete_url=url_for("admin_service_delete", item_id=item_id),
+        fields=_service_fields(item),
+    )
+
+
+@app.route("/admin/services/<int:item_id>/delete/", methods=["POST"])
+def admin_service_delete(item_id):
+    db.session.delete(Service.query.get_or_404(item_id))
+    db.session.commit()
+    flash("Service deleted.", "success")
+    return redirect(url_for("admin_services"))
+
+
+def _service_fields(item=None):
+    return [
+        {"name": "icon",        "label": "Icon (emoji)",   "type": "text",     "value": getattr(item, "icon", "📒"),  "help": "Paste an emoji"},
+        {"name": "title",       "label": "Title",          "type": "text",     "value": getattr(item, "title", ""),   "help": "", "required": True},
+        {"name": "description", "label": "Description",    "type": "textarea", "value": getattr(item, "description", ""), "help": ""},
+        {"name": "order",       "label": "Display Order",  "type": "number",   "value": getattr(item, "order", 0),   "help": "Lower = shown first"},
+        {"name": "active",      "label": "Visible on site","type": "checkbox", "value": getattr(item, "active", True), "help": ""},
+    ]
+
+
+# ── Admin — testimonials ──────────────────────────────────────────────────────
+
+@app.route("/admin/testimonials/")
+def admin_testimonials():
+    items = Testimonial.query.order_by(Testimonial.order).all()
+    return render_template("admin/testimonials.html", items=items)
+
+
+@app.route("/admin/testimonials/new/", methods=["GET", "POST"])
+def admin_testimonial_new():
+    if request.method == "POST":
+        db.session.add(Testimonial(
+            name=request.form["name"],
+            role=request.form.get("role", ""),
+            stars=int(request.form.get("stars", 5)),
+            text=request.form.get("text", ""),
+            order=int(request.form.get("order", 0)),
+            active="active" in request.form,
+        ))
+        db.session.commit()
+        flash("Testimonial added.", "success")
+        return redirect(url_for("admin_testimonials"))
+    return render_template("admin/item_form.html",
+        section="testimonials", section_label="Testimonial",
+        item=None, back_url=url_for("admin_testimonials"),
+        fields=_testimonial_fields(),
+    )
+
+
+@app.route("/admin/testimonials/<int:item_id>/", methods=["GET", "POST"])
+def admin_testimonial_edit(item_id):
+    item = Testimonial.query.get_or_404(item_id)
+    if request.method == "POST":
+        item.name   = request.form["name"]
+        item.role   = request.form.get("role", "")
+        item.stars  = int(request.form.get("stars", 5))
+        item.text   = request.form.get("text", "")
+        item.order  = int(request.form.get("order", 0))
+        item.active = "active" in request.form
+        db.session.commit()
+        flash("Testimonial updated.", "success")
+        return redirect(url_for("admin_testimonials"))
+    return render_template("admin/item_form.html",
+        section="testimonials", section_label="Testimonial",
+        item=item, back_url=url_for("admin_testimonials"),
+        delete_url=url_for("admin_testimonial_delete", item_id=item_id),
+        fields=_testimonial_fields(item),
+    )
+
+
+@app.route("/admin/testimonials/<int:item_id>/delete/", methods=["POST"])
+def admin_testimonial_delete(item_id):
+    db.session.delete(Testimonial.query.get_or_404(item_id))
+    db.session.commit()
+    flash("Testimonial deleted.", "success")
+    return redirect(url_for("admin_testimonials"))
+
+
+def _testimonial_fields(item=None):
+    return [
+        {"name": "name",   "label": "Name",          "type": "text",     "value": getattr(item, "name", ""),   "help": "", "required": True},
+        {"name": "role",   "label": "Role / Location","type": "text",     "value": getattr(item, "role", ""),   "help": "e.g. Freelance Designer, London"},
+        {"name": "stars",  "label": "Star Rating",    "type": "number",   "value": getattr(item, "stars", 5),   "help": "1–5"},
+        {"name": "text",   "label": "Review Text",    "type": "textarea", "value": getattr(item, "text", ""),   "help": ""},
+        {"name": "order",  "label": "Display Order",  "type": "number",   "value": getattr(item, "order", 0),   "help": "Lower = shown first"},
+        {"name": "active", "label": "Visible on site","type": "checkbox", "value": getattr(item, "active", True), "help": ""},
+    ]
+
+
+# ── Admin — FAQ ───────────────────────────────────────────────────────────────
+
+@app.route("/admin/faq/")
+def admin_faq():
+    items = FaqItem.query.order_by(FaqItem.order).all()
+    return render_template("admin/faq.html", items=items)
+
+
+@app.route("/admin/faq/new/", methods=["GET", "POST"])
+def admin_faq_new():
+    if request.method == "POST":
+        db.session.add(FaqItem(
+            question=request.form["question"],
+            answer=request.form.get("answer", ""),
+            order=int(request.form.get("order", 0)),
+            active="active" in request.form,
+        ))
+        db.session.commit()
+        flash("FAQ item added.", "success")
+        return redirect(url_for("admin_faq"))
+    return render_template("admin/item_form.html",
+        section="faq", section_label="FAQ Item",
+        item=None, back_url=url_for("admin_faq"),
+        fields=_faq_fields(),
+    )
+
+
+@app.route("/admin/faq/<int:item_id>/", methods=["GET", "POST"])
+def admin_faq_edit(item_id):
+    item = FaqItem.query.get_or_404(item_id)
+    if request.method == "POST":
+        item.question = request.form["question"]
+        item.answer   = request.form.get("answer", "")
+        item.order    = int(request.form.get("order", 0))
+        item.active   = "active" in request.form
+        db.session.commit()
+        flash("FAQ item updated.", "success")
+        return redirect(url_for("admin_faq"))
+    return render_template("admin/item_form.html",
+        section="faq", section_label="FAQ Item",
+        item=item, back_url=url_for("admin_faq"),
+        delete_url=url_for("admin_faq_delete", item_id=item_id),
+        fields=_faq_fields(item),
+    )
+
+
+@app.route("/admin/faq/<int:item_id>/delete/", methods=["POST"])
+def admin_faq_delete(item_id):
+    db.session.delete(FaqItem.query.get_or_404(item_id))
+    db.session.commit()
+    flash("FAQ item deleted.", "success")
+    return redirect(url_for("admin_faq"))
+
+
+def _faq_fields(item=None):
+    return [
+        {"name": "question", "label": "Question", "type": "textarea", "value": getattr(item, "question", ""), "help": "", "required": True},
+        {"name": "answer",   "label": "Answer",   "type": "textarea", "value": getattr(item, "answer", ""),   "help": ""},
+        {"name": "order",    "label": "Order",    "type": "number",   "value": getattr(item, "order", 0),     "help": "Lower = shown first"},
+        {"name": "active",   "label": "Visible",  "type": "checkbox", "value": getattr(item, "active", True), "help": ""},
+    ]
+
+
+# ── Admin — How It Works steps ────────────────────────────────────────────────
+
+@app.route("/admin/steps/")
+def admin_steps():
+    items = HowItWorksStep.query.order_by(HowItWorksStep.order).all()
+    return render_template("admin/steps.html", items=items)
+
+
+@app.route("/admin/steps/new/", methods=["GET", "POST"])
+def admin_step_new():
+    if request.method == "POST":
+        db.session.add(HowItWorksStep(
+            number=request.form.get("number", "1"),
+            title=request.form["title"],
+            description=request.form.get("description", ""),
+            order=int(request.form.get("order", 0)),
+        ))
+        db.session.commit()
+        flash("Step added.", "success")
+        return redirect(url_for("admin_steps"))
+    return render_template("admin/item_form.html",
+        section="steps", section_label="Step",
+        item=None, back_url=url_for("admin_steps"),
+        fields=_step_fields(),
+    )
+
+
+@app.route("/admin/steps/<int:item_id>/", methods=["GET", "POST"])
+def admin_step_edit(item_id):
+    item = HowItWorksStep.query.get_or_404(item_id)
+    if request.method == "POST":
+        item.number      = request.form.get("number", "1")
+        item.title       = request.form["title"]
+        item.description = request.form.get("description", "")
+        item.order       = int(request.form.get("order", 0))
+        db.session.commit()
+        flash("Step updated.", "success")
+        return redirect(url_for("admin_steps"))
+    return render_template("admin/item_form.html",
+        section="steps", section_label="Step",
+        item=item, back_url=url_for("admin_steps"),
+        delete_url=url_for("admin_step_delete", item_id=item_id),
+        fields=_step_fields(item),
+    )
+
+
+@app.route("/admin/steps/<int:item_id>/delete/", methods=["POST"])
+def admin_step_delete(item_id):
+    db.session.delete(HowItWorksStep.query.get_or_404(item_id))
+    db.session.commit()
+    flash("Step deleted.", "success")
+    return redirect(url_for("admin_steps"))
+
+
+def _step_fields(item=None):
+    return [
+        {"name": "number",      "label": "Step Number", "type": "text",     "value": getattr(item, "number", "1"),      "help": "Displayed in the circle"},
+        {"name": "title",       "label": "Title",       "type": "text",     "value": getattr(item, "title", ""),        "help": "", "required": True},
+        {"name": "description", "label": "Description", "type": "textarea", "value": getattr(item, "description", ""),  "help": ""},
+        {"name": "order",       "label": "Order",       "type": "number",   "value": getattr(item, "order", 0),         "help": "Lower = shown first"},
+    ]
+
+
+# ── Admin — About ─────────────────────────────────────────────────────────────
+
+@app.route("/admin/about/")
+def admin_about():
+    items = AboutPoint.query.order_by(AboutPoint.order).all()
+    return render_template("admin/about.html", items=items)
+
+
+@app.route("/admin/about/points/new/", methods=["GET", "POST"])
+def admin_about_point_new():
+    if request.method == "POST":
+        db.session.add(AboutPoint(
+            icon=request.form.get("icon", "✅"),
+            title=request.form["title"],
+            description=request.form.get("description", ""),
+            order=int(request.form.get("order", 0)),
+        ))
+        db.session.commit()
+        flash("About point added.", "success")
+        return redirect(url_for("admin_about"))
+    return render_template("admin/item_form.html",
+        section="about_points", section_label="About Point",
+        item=None, back_url=url_for("admin_about"),
+        fields=_about_point_fields(),
+    )
+
+
+@app.route("/admin/about/points/<int:item_id>/", methods=["GET", "POST"])
+def admin_about_point_edit(item_id):
+    item = AboutPoint.query.get_or_404(item_id)
+    if request.method == "POST":
+        item.icon        = request.form.get("icon", "✅")
+        item.title       = request.form["title"]
+        item.description = request.form.get("description", "")
+        item.order       = int(request.form.get("order", 0))
+        db.session.commit()
+        flash("About point updated.", "success")
+        return redirect(url_for("admin_about"))
+    return render_template("admin/item_form.html",
+        section="about_points", section_label="About Point",
+        item=item, back_url=url_for("admin_about"),
+        delete_url=url_for("admin_about_point_delete", item_id=item_id),
+        fields=_about_point_fields(item),
+    )
+
+
+@app.route("/admin/about/points/<int:item_id>/delete/", methods=["POST"])
+def admin_about_point_delete(item_id):
+    db.session.delete(AboutPoint.query.get_or_404(item_id))
+    db.session.commit()
+    flash("About point deleted.", "success")
+    return redirect(url_for("admin_about"))
+
+
+def _about_point_fields(item=None):
+    return [
+        {"name": "icon",        "label": "Icon (emoji)", "type": "text",     "value": getattr(item, "icon", "✅"),       "help": ""},
+        {"name": "title",       "label": "Title",        "type": "text",     "value": getattr(item, "title", ""),        "help": "", "required": True},
+        {"name": "description", "label": "Description",  "type": "textarea", "value": getattr(item, "description", ""),  "help": ""},
+        {"name": "order",       "label": "Order",        "type": "number",   "value": getattr(item, "order", 0),         "help": ""},
+    ]
+
+
+# ── Admin — generate static site ─────────────────────────────────────────────
+
+@app.route("/admin/generate/", methods=["POST"])
+def admin_generate():
+    try:
+        from flask_frozen import Freezer
+        freezer = Freezer(app)
+        with app.app_context():
+            freezer.freeze()
+        flash("Static site generated in the _static/ folder. You can now deploy that folder.", "success")
+    except Exception as exc:
+        flash(f"Error generating static site: {exc}", "error")
+    return redirect(url_for("admin_dashboard"))
+
+
+# ── Startup ───────────────────────────────────────────────────────────────────
+
+def create_tables():
+    with app.app_context():
+        db.create_all()
+
+
+if __name__ == "__main__":
+    create_tables()
+    app.run(debug=True, port=5000)

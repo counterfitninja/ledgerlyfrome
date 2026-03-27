@@ -1,0 +1,58 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit' if item else 'New' }} {{ section_label }}{% endblock %}
+{% block page_title %}{{ 'Edit' if item else 'Add New' }} {{ section_label }}{% endblock %}
+
+{% block topbar_actions %}
+<a href="{{ back_url }}" class="adm-btn adm-btn-outline">← Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="adm-card">
+  <form method="POST">
+    {% for f in fields %}
+    <div class="adm-form-group">
+      {% if f.type == "checkbox" %}
+      <label class="adm-checkbox-row">
+        <input type="checkbox" name="{{ f.name }}"
+               {{ 'checked' if f.value }} />
+        {{ f.label }}
+      </label>
+      {% elif f.type == "textarea" %}
+      <label for="{{ f.name }}">
+        {{ f.label }}
+        {% if f.get('required') %}<span style="color:#0d9488">*</span>{% endif %}
+      </label>
+      <textarea id="{{ f.name }}" name="{{ f.name }}" rows="4"
+                {{ 'required' if f.get('required') }}>{{ f.value }}</textarea>
+      {% else %}
+      <label for="{{ f.name }}">
+        {{ f.label }}
+        {% if f.get('required') %}<span style="color:#0d9488">*</span>{% endif %}
+      </label>
+      <input type="{{ f.type }}" id="{{ f.name }}" name="{{ f.name }}"
+             value="{{ f.value }}"
+             {{ 'required' if f.get('required') }} />
+      {% endif %}
+      {% if f.help %}<p class="adm-help">{{ f.help }}</p>{% endif %}
+    </div>
+    {% endfor %}
+
+    <div class="adm-form-actions">
+      <button type="submit" class="adm-btn adm-btn-primary">
+        💾 {{ 'Save Changes' if item else 'Add ' + section_label }}
+      </button>
+      <a href="{{ back_url }}" class="adm-btn adm-btn-outline">Cancel</a>
+    </div>
+  </form>
+
+  {# Delete form is OUTSIDE the edit form to avoid nested-form invalid HTML #}
+  {% if item and delete_url %}
+  <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid #fee2e2">
+    <form method="POST" action="{{ delete_url }}"
+          onsubmit="return confirm('Delete this {{ section_label }}? This cannot be undone.')">
+      <button type="submit" class="adm-btn adm-btn-danger adm-btn-sm">🗑 Delete this {{ section_label }}</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

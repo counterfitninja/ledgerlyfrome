@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ cfg['meta_title'] or (cfg['business_name'] + ' — Professional Bookkeeping') }}</title>
+  <meta name="description" content="{{ cfg['meta_description'] }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+<!-- ── Navigation ──────────────────────────────────────────────────────── -->
+<header class="nav" id="nav">
+  <div class="container nav__inner">
+    <a href="#" class="nav__logo">{{ cfg['business_name'] }}</a>
+    <nav class="nav__links" aria-label="Main navigation">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="btn btn-primary nav__cta">Get a Free Quote</a>
+    <button class="nav__hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav__mobile" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="btn btn-primary">Get a Free Quote</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ── Hero ────────────────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="container hero__inner">
+    <h1>{{ cfg['hero_heading']|safe }}</h1>
+    <p class="hero__sub">{{ cfg['hero_sub'] }}</p>
+    <div class="hero__badges">
+      {% for badge in cfg['hero_badges'].split(',') if badge.strip() %}
+      <span class="badge">{{ badge.strip() }}</span>
+      {% endfor %}
+    </div>
+    <div class="hero__ctas">
+      <a href="{{ cfg['hero_cta1_href'] or '#contact' }}" class="btn btn-white">
+        {{ cfg['hero_cta1_label'] or 'Get a Free Quote' }}
+      </a>
+      <a href="{{ cfg['hero_cta2_href'] or '#services' }}" class="btn btn-outline"
+         style="border-color:rgba(255,255,255,.6);color:#fff">
+        {{ cfg['hero_cta2_label'] or 'See Our Services' }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Services ────────────────────────────────────────────────────────── -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">{{ cfg['services_heading'] }}</h2>
+      <p class="section-sub">{{ cfg['services_sub'] }}</p>
+    </div>
+    <div class="services__grid">
+      {% for s in services %}
+      <article class="service-card">
+        <div class="service-card__icon">{{ s.icon }}</div>
+        <h3>{{ s.title }}</h3>
+        <p>{{ s.description }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── About ────────────────────────────────────────────────────────────── -->
+<section class="about" id="about">
+  <div class="container about__inner">
+    <div class="about__text">
+      <h2 class="section-heading">{{ cfg['about_heading'] }}</h2>
+      <p class="section-sub">{{ cfg['about_sub'] }}</p>
+      <p class="about__body">{{ cfg['about_body'] }}</p>
+      <ul class="about__points">
+        {% for p in about_points %}
+        <li class="about-point">
+          <span class="about-point__icon">{{ p.icon }}</span>
+          <div>
+            <h4>{{ p.title }}</h4>
+            <p>{{ p.description }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="about__visual" aria-hidden="true">
+      <div class="about__stat"><strong>100%</strong><span>Remote service</span></div>
+      <div class="about__stat"><strong>UK&#8209;wide</strong><span>Coverage</span></div>
+      <div class="about__stat"><strong>Fixed</strong><span>Transparent pricing</span></div>
+      <div class="about__stat"><strong>5★</strong><span>Client reviews</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How It Works ─────────────────────────────────────────────────────── -->
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">{{ cfg['hiw_heading'] }}</h2>
+      <p class="section-sub">{{ cfg['hiw_sub'] }}</p>
+    </div>
+    <div class="steps">
+      {% for step in steps %}
+      <div class="step">
+        <div class="step__num">{{ step.number }}</div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Reviews ──────────────────────────────────────────────────────────── -->
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">{{ cfg['reviews_heading'] }}</h2>
+      <p class="section-sub">{{ cfg['reviews_sub'] }}</p>
+    </div>
+    <div class="reviews__grid">
+      {% for r in testimonials %}
+      <article class="review-card">
+        <div class="review-card__stars">{{ '★' * r.stars }}{{ '☆' * (5 - r.stars) }}</div>
+        <p class="review-card__text">"{{ r.text }}"</p>
+        <div class="review-card__author">
+          <strong>{{ r.name }}</strong>
+          <span>{{ r.role }}</span>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ──────────────────────────────────────────────────────────────── -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">{{ cfg['faq_heading'] }}</h2>
+      <p class="section-sub">{{ cfg['faq_sub'] }}</p>
+    </div>
+    <ul class="faq__list">
+      {% for item in faq_items %}
+      <li class="faq-item">
+        <button class="faq-item__q" aria-expanded="false">
+          {{ item.question }}
+          <span class="arrow" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__a"><p>{{ item.answer }}</p></div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<!-- ── Contact ──────────────────────────────────────────────────────────── -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">{{ cfg['contact_heading'] }}</h2>
+      <p class="section-sub">{{ cfg['contact_sub'] }}</p>
+    </div>
+    <div class="contact__inner">
+
+      <!-- Details -->
+      <div class="contact__info">
+        <div class="contact__detail">
+          <span class="contact__detail-icon">📞</span>
+          <div>
+            <h4>Phone</h4>
+            <a href="tel:{{ cfg['phone']|replace(' ','') }}">{{ cfg['phone'] }}</a>
+          </div>
+        </div>
+        <div class="contact__detail">
+          <span class="contact__detail-icon">✉️</span>
+          <div>
+            <h4>Email</h4>
+            <a href="mailto:{{ cfg['email'] }}">{{ cfg['email'] }}</a>
+          </div>
+        </div>
+        <div class="contact__detail">
+          <span class="contact__detail-icon">🕐</span>
+          <div><h4>Hours</h4><p>{{ cfg['hours'] }}</p></div>
+        </div>
+        <div class="contact__detail">
+          <span class="contact__detail-icon">📍</span>
+          <div><h4>Location</h4><p>{{ cfg['location'] }}</p></div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      {#
+        In live Flask mode: form POSTs to the Flask contact handler.
+        In static/frozen mode: uses Formspree URL (set in admin → Business settings).
+        If no Formspree URL is set in static mode, falls back to mailto: link.
+      #}
+      {% if config.STATIC_MODE %}
+        {% set form_action = cfg['formspree_url'] or ('mailto:' + cfg['email']) %}
+      {% else %}
+        {% set form_action = cfg['formspree_url'] or url_for('contact_submit') %}
+      {% endif %}
+      <div class="contact__form">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% for category, msg in messages %}
+          <div style="padding:1rem;margin-bottom:1rem;border-radius:.5rem;
+               background:{% if category=='success' %}#d1fae5{% else %}#fee2e2{% endif %};
+               color:{% if category=='success' %}#065f46{% else %}#991b1b{% endif %}">
+            {{ msg }}
+          </div>
+          {% endfor %}
+        {% endwith %}
+        <form action="{{ form_action }}" method="POST">
+          <div class="form-group">
+            <label for="name">Your Name <span style="color:var(--clr-500)">*</span></label>
+            <input type="text" id="name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address <span style="color:var(--clr-500)">*</span></label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" />
+          </div>
+          <div class="form-group">
+            <label for="business">Business Type</label>
+            <input type="text" id="business" name="business" placeholder="e.g. Sole trader, Ltd company" />
+          </div>
+          <div class="form-group">
+            <label for="message">How can we help?</label>
+            <textarea id="message" name="message" rows="4"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary form-submit" style="width:100%;justify-content:center;padding:.9rem">
+            Send Message
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── Footer ───────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="nav__logo">{{ cfg['business_name'] }}</div>
+        <p>{{ cfg['tagline'] }}</p>
+      </div>
+      <div class="footer__col">
+        <h4>Services</h4>
+        <ul>
+          {% for s in services[:6] %}
+          <li><a href="#services">{{ s.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:{{ cfg['phone']|replace(' ','') }}">{{ cfg['phone'] }}</a></li>
+          <li><a href="mailto:{{ cfg['email'] }}">{{ cfg['email'] }}</a></li>
+          <li>{{ cfg['hours'] }}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>{{ cfg['footer_copy']|safe }}</p>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

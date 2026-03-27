@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+{% block title %}How It Works{% endblock %}
+{% block page_title %}How It Works — Steps{% endblock %}
+
+{% block topbar_actions %}
+<a href="{{ url_for('admin_step_new') }}" class="adm-btn adm-btn-primary">+ Add Step</a>
+{% endblock %}
+
+{% block content %}
+<div class="adm-card">
+  {% if items %}
+  <table class="adm-list">
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>#</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td style="color:#9ca3af;width:60px">{{ item.order }}</td>
+        <td>
+          <div style="width:2rem;height:2rem;border-radius:50%;background:#0d9488;color:#fff;
+                      display:flex;align-items:center;justify-content:center;
+                      font-weight:700;font-size:.85rem">{{ item.number }}</div>
+        </td>
+        <td><strong>{{ item.title }}</strong></td>
+        <td style="font-size:.88rem;color:#6b7280">
+          {{ item.description[:80] }}{% if item.description|length > 80 %}…{% endif %}
+        </td>
+        <td>
+          <div class="adm-actions">
+            <a href="{{ url_for('admin_step_edit', item_id=item.id) }}"
+               class="adm-btn adm-btn-outline adm-btn-sm">Edit</a>
+            <form method="POST"
+                  action="{{ url_for('admin_step_delete', item_id=item.id) }}"
+                  onsubmit="return confirm('Delete step {{ item.number }}?')">
+              <button type="submit" class="adm-btn adm-btn-danger adm-btn-sm">Delete</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color:#9ca3af;font-size:.92rem">No steps yet. <a href="{{ url_for('admin_step_new') }}">Add one.</a></p>
+  {% endif %}
+</div>
+{% endblock %}
