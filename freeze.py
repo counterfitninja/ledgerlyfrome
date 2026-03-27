@@ -34,7 +34,7 @@ import warnings
 from flask_frozen import Freezer, MissingURLGeneratorWarning
 
 # with_no_argument_rules=False stops Frozen-Flask auto-discovering admin routes
-freezer = Freezer(app, with_static_files=True, with_no_argument_rules=False)
+freezer = Freezer(app, with_static_files=True, with_no_argument_rules=False, log_url_for=False)
 
 
 @freezer.register_generator
