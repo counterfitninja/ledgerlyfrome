@@ -141,6 +141,13 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-weight: 800;
   color: var(--clr-600);
   letter-spacing: -.03em;
+  display: flex;
+  align-items: center;
+}
+.nav__logo-img {
+  height: 48px;
+  width: auto;
+  display: block;
 }
 
 .nav__logo span { color: var(--clr-accent); }

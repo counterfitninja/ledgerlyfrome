@@ -9,13 +9,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='logo-icon.png') }}" />
 </head>
 <body>
 
 <!-- ── Navigation ──────────────────────────────────────────────────────── -->
 <header class="nav" id="nav">
   <div class="container nav__inner">
-    <a href="#" class="nav__logo">{{ cfg['business_name'] }}</a>
+    <a href="#" class="nav__logo">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="{{ cfg['business_name'] }}" class="nav__logo-img" />
+    </a>
     <nav class="nav__links" aria-label="Main navigation">
       <a href="#services">Services</a>
       <a href="#about">About</a>
