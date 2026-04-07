@@ -5,6 +5,7 @@ from flask import (
     Flask, render_template, request, redirect,
     url_for, flash, abort, session,
 )
+from flask_mail import Mail, Message
 from models import (
     db, SiteConfig, Service, Testimonial,
     FaqItem, HowItWorksStep, AboutPoint,
@@ -23,6 +24,15 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-change-me")
 app.config["FREEZER_DESTINATION"] = "_static"
 app.config["FREEZER_RELATIVE_URLS"] = True
 app.config["STATIC_MODE"] = False  # set to True in freeze.py
+
+# ── Mail (Flask-Mail) ─────────────────────────────────────────────────────────
+app.config["MAIL_SERVER"]   = os.environ.get("MAIL_SERVER", "smtp.office365.com")
+app.config["MAIL_PORT"]     = int(os.environ.get("MAIL_PORT", 587))
+app.config["MAIL_USE_TLS"]  = os.environ.get("MAIL_USE_TLS", "true").lower() == "true"
+app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME", "")
+app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD", "")
+
+mail = Mail(app)
 
 # ── Admin auth ────────────────────────────────────────────────────────────────
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
@@ -80,11 +90,45 @@ def index():
     return render_template("site/index.html", **site_context())
 
 
-@app.route("/contact/submit/", methods=["POST"])
+@app.route("/contact/submit/", methods=["GET", "POST"])
 def contact_submit():
-    # In live Flask mode we just thank the user.
-    # TODO: integrate an email service (e.g. Flask-Mail, SendGrid) here.
-    name = request.form.get("name", "")
+    if request.method == "GET":
+        return redirect(url_for("index") + "#contact")
+    name     = request.form.get("name", "").strip()
+    email    = request.form.get("email", "").strip()
+    phone    = request.form.get("phone", "").strip()
+    business = request.form.get("business", "").strip()
+    message  = request.form.get("message", "").strip()
+
+    if not name or not email:
+        flash("Please fill in your name and email address.", "error")
+        return redirect(url_for("index") + "#contact")
+
+    cfg = get_cfg()
+    to_addr = cfg["email"]
+
+    if to_addr and app.config.get("MAIL_USERNAME"):
+        try:
+            body = (
+                f"New enquiry from {name}\n\n"
+                f"Email:    {email}\n"
+                f"Phone:    {phone or '—'}\n"
+                f"Business: {business or '—'}\n\n"
+                f"Message:\n{message or '(none)'}"
+            )
+            msg = Message(
+                subject=f"New enquiry from {name}",
+                sender=app.config["MAIL_USERNAME"],
+                recipients=[to_addr],
+                reply_to=email,
+                body=body,
+            )
+            mail.send(msg)
+        except Exception as exc:
+            app.logger.error("Contact form mail failed: %s", exc)
+            flash("Sorry, there was a problem sending your message. Please email us directly.", "error")
+            return redirect(url_for("index") + "#contact")
+
     flash(f"Thanks {name}! We'll be in touch within one business day.", "success")
     return redirect(url_for("index") + "#contact")
 
