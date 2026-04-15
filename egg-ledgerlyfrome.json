@@ -142,6 +142,56 @@
             "user_editable": true,
             "rules": [],
             "sort": 11
+        },
+        {
+            "name": "Mail Server",
+            "description": "SMTP server hostname for outgoing email.",
+            "env_variable": "MAIL_SERVER",
+            "default_value": "smtp.office365.com",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [],
+            "sort": 12
+        },
+        {
+            "name": "Mail Port",
+            "description": "SMTP port for outgoing email.",
+            "env_variable": "MAIL_PORT",
+            "default_value": "587",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [],
+            "sort": 13
+        },
+        {
+            "name": "Mail Use TLS",
+            "description": "Use TLS for SMTP connection (true/false).",
+            "env_variable": "MAIL_USE_TLS",
+            "default_value": "true",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [],
+            "sort": 14
+        },
+        {
+            "name": "Mail Username",
+            "description": "Microsoft 365 mailbox username (usually full email address).",
+            "env_variable": "MAIL_USERNAME",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [],
+            "sort": 15
+        },
+        {
+            "name": "Mail Password",
+            "description": "Microsoft 365 mailbox password or app password for SMTP AUTH.",
+            "env_variable": "MAIL_PASSWORD",
+            "default_value": "",
+            "user_viewable": false,
+            "user_editable": true,
+            "rules": [],
+            "sort": 16
         }
     ]
 }
