@@ -106,6 +106,28 @@ def _can_send_email():
     return bool(app.config.get("MAIL_USERNAME"))
 
 
+def _missing_mail_requirements():
+    provider = app.config.get("MAIL_PROVIDER", "smtp")
+    if provider == "m365_graph":
+        required = ["M365_TENANT_ID", "M365_CLIENT_ID", "M365_CLIENT_SECRET", "M365_SENDER"]
+    else:
+        required = ["MAIL_USERNAME", "MAIL_PASSWORD", "MAIL_SERVER", "MAIL_PORT"]
+    return [key for key in required if not app.config.get(key)]
+
+
+def _log_mail_config_health():
+    provider = app.config.get("MAIL_PROVIDER", "smtp")
+    missing = _missing_mail_requirements()
+    if missing:
+        app.logger.warning(
+            "Mail config incomplete for provider '%s'; missing: %s",
+            provider,
+            ", ".join(missing),
+        )
+    else:
+        app.logger.info("Mail config ready for provider '%s'", provider)
+
+
 def _send_via_graph(subject, body, to_addr, reply_to):
     tenant_id = app.config["M365_TENANT_ID"]
     client_id = app.config["M365_CLIENT_ID"]
@@ -228,6 +250,16 @@ def contact_submit():
             app.logger.error("Contact form mail failed: %s", exc)
             flash("Sorry, there was a problem sending your message. Please email us directly.", "error")
             return redirect(url_for("index") + "#contact")
+    else:
+        if not to_addr:
+            app.logger.warning("Contact form mail skipped: business email recipient is not configured")
+        missing = _missing_mail_requirements()
+        if missing:
+            app.logger.warning(
+                "Contact form mail skipped: provider '%s' missing: %s",
+                app.config.get("MAIL_PROVIDER", "smtp"),
+                ", ".join(missing),
+            )
 
     flash(f"Thanks {name}! We'll be in touch within one business day.", "success")
     return redirect(url_for("index") + "#contact")
@@ -657,6 +689,7 @@ def create_tables():
 
 
 create_tables()
+_log_mail_config_health()
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
