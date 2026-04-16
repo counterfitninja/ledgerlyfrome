@@ -1,5 +1,9 @@
 import os
+import json
 from collections import defaultdict
+from urllib import error as urllib_error
+from urllib import parse as urllib_parse
+from urllib import request as urllib_request
 
 from flask import (
     Flask, render_template, request, redirect,
@@ -26,11 +30,18 @@ app.config["FREEZER_RELATIVE_URLS"] = True
 app.config["STATIC_MODE"] = False  # set to True in freeze.py
 
 # ── Mail (Flask-Mail) ─────────────────────────────────────────────────────────
+app.config["MAIL_PROVIDER"] = os.environ.get("MAIL_PROVIDER", "smtp").strip().lower()
 app.config["MAIL_SERVER"]   = os.environ.get("MAIL_SERVER", "smtp.office365.com")
 app.config["MAIL_PORT"]     = int(os.environ.get("MAIL_PORT", 587))
 app.config["MAIL_USE_TLS"]  = os.environ.get("MAIL_USE_TLS", "true").lower() == "true"
 app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME", "")
 app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD", "")
+
+# Microsoft 365 Graph app auth (recommended when SMTP AUTH is disabled).
+app.config["M365_TENANT_ID"] = os.environ.get("M365_TENANT_ID", "")
+app.config["M365_CLIENT_ID"] = os.environ.get("M365_CLIENT_ID", "")
+app.config["M365_CLIENT_SECRET"] = os.environ.get("M365_CLIENT_SECRET", "")
+app.config["M365_SENDER"] = os.environ.get("M365_SENDER", "")
 
 mail = Mail(app)
 
@@ -83,6 +94,102 @@ def site_context():
     )
 
 
+def _can_send_email():
+    provider = app.config.get("MAIL_PROVIDER", "smtp")
+    if provider == "m365_graph":
+        return all([
+            app.config.get("M365_TENANT_ID"),
+            app.config.get("M365_CLIENT_ID"),
+            app.config.get("M365_CLIENT_SECRET"),
+            app.config.get("M365_SENDER"),
+        ])
+    return bool(app.config.get("MAIL_USERNAME"))
+
+
+def _send_via_graph(subject, body, to_addr, reply_to):
+    tenant_id = app.config["M365_TENANT_ID"]
+    client_id = app.config["M365_CLIENT_ID"]
+    client_secret = app.config["M365_CLIENT_SECRET"]
+    sender = app.config["M365_SENDER"]
+
+    token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token"
+    token_payload = urllib_parse.urlencode({
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "scope": "https://graph.microsoft.com/.default",
+        "grant_type": "client_credentials",
+    }).encode("utf-8")
+    token_request = urllib_request.Request(
+        token_url,
+        data=token_payload,
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        method="POST",
+    )
+
+    try:
+        with urllib_request.urlopen(token_request, timeout=15) as token_response:
+            token_json = json.loads(token_response.read().decode("utf-8"))
+    except urllib_error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"Failed to fetch Graph token: {detail}") from exc
+
+    access_token = token_json.get("access_token")
+    if not access_token:
+        raise RuntimeError("Failed to fetch Graph token: access_token missing")
+
+    graph_url = f"https://graph.microsoft.com/v1.0/users/{urllib_parse.quote(sender)}/sendMail"
+    graph_payload = {
+        "message": {
+            "subject": subject,
+            "body": {"contentType": "Text", "content": body},
+            "toRecipients": [{"emailAddress": {"address": to_addr}}],
+            "replyTo": [{"emailAddress": {"address": reply_to}}],
+        },
+        "saveToSentItems": True,
+    }
+    graph_request = urllib_request.Request(
+        graph_url,
+        data=json.dumps(graph_payload).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib_request.urlopen(graph_request, timeout=15):
+            return
+    except urllib_error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"Graph sendMail failed: {detail}") from exc
+
+
+def send_contact_email(name, email, phone, business, message, to_addr):
+    subject = f"New enquiry from {name}"
+    body = (
+        f"New enquiry from {name}\n\n"
+        f"Email:    {email}\n"
+        f"Phone:    {phone or '—'}\n"
+        f"Business: {business or '—'}\n\n"
+        f"Message:\n{message or '(none)'}"
+    )
+
+    provider = app.config.get("MAIL_PROVIDER", "smtp")
+    if provider == "m365_graph":
+        _send_via_graph(subject=subject, body=body, to_addr=to_addr, reply_to=email)
+        return
+
+    msg = Message(
+        subject=subject,
+        sender=app.config["MAIL_USERNAME"],
+        recipients=[to_addr],
+        reply_to=email,
+        body=body,
+    )
+    mail.send(msg)
+
+
 # ── Public site ───────────────────────────────────────────────────────────────
 
 @app.route("/")
@@ -107,23 +214,16 @@ def contact_submit():
     cfg = get_cfg()
     to_addr = cfg["email"]
 
-    if to_addr and app.config.get("MAIL_USERNAME"):
+    if to_addr and _can_send_email():
         try:
-            body = (
-                f"New enquiry from {name}\n\n"
-                f"Email:    {email}\n"
-                f"Phone:    {phone or '—'}\n"
-                f"Business: {business or '—'}\n\n"
-                f"Message:\n{message or '(none)'}"
+            send_contact_email(
+                name=name,
+                email=email,
+                phone=phone,
+                business=business,
+                message=message,
+                to_addr=to_addr,
             )
-            msg = Message(
-                subject=f"New enquiry from {name}",
-                sender=app.config["MAIL_USERNAME"],
-                recipients=[to_addr],
-                reply_to=email,
-                body=body,
-            )
-            mail.send(msg)
         except Exception as exc:
             app.logger.error("Contact form mail failed: %s", exc)
             flash("Sorry, there was a problem sending your message. Please email us directly.", "error")
