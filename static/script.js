@@ -37,7 +37,28 @@ const nav = document.getElementById("nav");
 if (nav) {
   window.addEventListener("scroll", () => {
     nav.style.boxShadow = window.scrollY > 10
-      ? "0 4px 20px rgba(13,148,136,.15)"
+      ? "0 10px 30px rgba(28, 54, 49, .08)"
       : "";
   }, { passive: true });
+}
+
+/* ── Reviews rail controls ───────────────────────────────────────────────── */
+const reviewsTrack = document.getElementById("reviews-track");
+const reviewControls = document.querySelectorAll("[data-review-scroll]");
+
+if (reviewsTrack && reviewControls.length) {
+  reviewControls.forEach(button => {
+    button.addEventListener("click", () => {
+      const firstCard = reviewsTrack.querySelector(".review-card");
+      const scrollAmount = firstCard
+        ? firstCard.getBoundingClientRect().width + 24
+        : 320;
+      const direction = button.dataset.reviewScroll === "next" ? 1 : -1;
+
+      reviewsTrack.scrollBy({
+        left: scrollAmount * direction,
+        behavior: "smooth",
+      });
+    });
+  });
 }

@@ -7,7 +7,7 @@
   <meta name="description" content="{{ cfg['meta_description'] }}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}" />
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='logo-icon.png') }}" />
@@ -49,22 +49,29 @@
 <!-- ── Hero ────────────────────────────────────────────────────────────── -->
 <section class="hero" id="hero">
   <div class="container hero__inner">
-    <h1>{{ cfg['hero_heading']|safe }}</h1>
-    <p class="hero__sub">{{ cfg['hero_sub'] }}</p>
-    <div class="hero__badges">
-      {% for badge in cfg['hero_badges'].split(',') if badge.strip() %}
-      <span class="badge">{{ badge.strip() }}</span>
-      {% endfor %}
+    <div class="hero__content">
+      <p class="hero__eyebrow">Remote bookkeeping | Financial operations</p>
+      <h1>{{ cfg['hero_heading']|safe }}</h1>
+      <p class="hero__sub">{{ cfg['hero_sub'] }}</p>
+      <div class="hero__ctas">
+        <a href="{{ cfg['hero_cta1_href'] or '#contact' }}" class="btn btn-primary">
+          {{ cfg['hero_cta1_label'] or 'Get a Free Quote' }}
+        </a>
+        <a href="{{ cfg['hero_cta2_href'] or '#services' }}" class="btn btn-secondary">
+          {{ cfg['hero_cta2_label'] or 'See Our Services' }}
+        </a>
+      </div>
     </div>
-    <div class="hero__ctas">
-      <a href="{{ cfg['hero_cta1_href'] or '#contact' }}" class="btn btn-white">
-        {{ cfg['hero_cta1_label'] or 'Get a Free Quote' }}
-      </a>
-      <a href="{{ cfg['hero_cta2_href'] or '#services' }}" class="btn btn-outline"
-         style="border-color:rgba(255,255,255,.6);color:#fff">
-        {{ cfg['hero_cta2_label'] or 'See Our Services' }}
-      </a>
-    </div>
+    <aside class="hero__aside" aria-label="Business summary">
+      <p class="hero__aside-kicker">{{ cfg['business_name'] }}</p>
+      <p class="hero__aside-tagline">{{ cfg['tagline'] }}</p>
+      <p class="hero__aside-copy">{{ cfg['location'] }}</p>
+    </aside>
+  </div>
+  <div class="container hero__badges">
+    {% for badge in cfg['hero_badges'].split(',') if badge.strip() %}
+    <span class="badge">{{ badge.strip() }}</span>
+    {% endfor %}
   </div>
 </section>
 
@@ -90,6 +97,15 @@
 <!-- ── About ────────────────────────────────────────────────────────────── -->
 <section class="about" id="about">
   <div class="container about__inner">
+    <div class="about__visual" aria-hidden="true">
+      <div class="about__panel">
+        <div class="about__panel-glow"></div>
+        <div class="about__stat about__stat--primary"><strong>100%</strong><span>Remote services</span></div>
+        <div class="about__stat"><strong>UK-WIDE</strong><span>Coverage</span></div>
+        <div class="about__stat"><strong>FIXED</strong><span>Transparent pricing</span></div>
+        <div class="about__reviews">★★★★★ <span>Client reviews</span></div>
+      </div>
+    </div>
     <div class="about__text">
       <h2 class="section-heading">{{ cfg['about_heading'] }}</h2>
       <p class="section-sub">{{ cfg['about_sub'] }}</p>
@@ -105,12 +121,6 @@
         </li>
         {% endfor %}
       </ul>
-    </div>
-    <div class="about__visual" aria-hidden="true">
-      <div class="about__stat"><strong>100%</strong><span>Remote service</span></div>
-      <div class="about__stat"><strong>UK&#8209;wide</strong><span>Coverage</span></div>
-      <div class="about__stat"><strong>Fixed</strong><span>Transparent pricing</span></div>
-      <div class="about__stat"><strong>5★</strong><span>Client reviews</span></div>
     </div>
   </div>
 </section>
@@ -141,7 +151,8 @@
       <h2 class="section-heading">{{ cfg['reviews_heading'] }}</h2>
       <p class="section-sub">{{ cfg['reviews_sub'] }}</p>
     </div>
-    <div class="reviews__grid">
+    <div class="reviews__carousel">
+    <div class="reviews__track" id="reviews-track">
       {% for r in testimonials %}
       <article class="review-card">
         <div class="review-card__stars">{{ '★' * r.stars }}{{ '☆' * (5 - r.stars) }}</div>
@@ -152,6 +163,11 @@
         </div>
       </article>
       {% endfor %}
+    </div>
+    </div>
+    <div class="reviews__controls" aria-label="Testimonial navigation">
+      <button class="reviews__nav" type="button" data-review-scroll="prev" aria-label="Scroll testimonials left">←</button>
+      <button class="reviews__nav" type="button" data-review-scroll="next" aria-label="Scroll testimonials right">→</button>
     </div>
   </div>
 </section>
