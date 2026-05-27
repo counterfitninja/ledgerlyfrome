@@ -341,8 +341,18 @@ BUSINESS_FIELDS = [
     ("email",             "Email",                "text",     ""),
     ("hours",             "Office Hours",         "text",     "e.g. Mon–Fri, 9am–5pm"),
     ("location",          "Location / Area",      "text",     "e.g. Frome, Somerset — serving clients UK-wide"),
-    ("bg_transition_start", "Background Start Color", "color",   "Top gradient color for the page background"),
-    ("bg_transition_end",   "Background End Color",   "color",   "Bottom gradient color for the page background"),
+    ("section_transition_services_enabled", "Services Transition Enabled", "checkbox", "Enable white to color transition for Services"),
+    ("section_transition_services_color",   "Services Transition Color",   "color",    "End color for Services transition"),
+    ("section_transition_about_enabled",    "About Transition Enabled",    "checkbox", "Enable white to color transition for About"),
+    ("section_transition_about_color",      "About Transition Color",      "color",    "End color for About transition"),
+    ("section_transition_hiw_enabled",      "How It Works Transition Enabled", "checkbox", "Enable white to color transition for How It Works"),
+    ("section_transition_hiw_color",        "How It Works Transition Color",   "color",    "End color for How It Works transition"),
+    ("section_transition_reviews_enabled",  "Reviews Transition Enabled",  "checkbox", "Enable white to color transition for Reviews"),
+    ("section_transition_reviews_color",    "Reviews Transition Color",    "color",    "End color for Reviews transition"),
+    ("section_transition_faq_enabled",      "FAQ Transition Enabled",      "checkbox", "Enable white to color transition for FAQ"),
+    ("section_transition_faq_color",        "FAQ Transition Color",        "color",    "End color for FAQ transition"),
+    ("section_transition_contact_enabled",  "Contact Transition Enabled",  "checkbox", "Enable white to color transition for Contact"),
+    ("section_transition_contact_color",    "Contact Transition Color",    "color",    "End color for Contact transition"),
     ("hero_heading",      "Hero Heading",         "text",     "HTML allowed — use <br> for line break"),
     ("hero_sub",          "Hero Sub-heading",     "textarea", ""),
     ("hero_badges",       "Hero Badges",          "text",     "Comma-separated, e.g. 100% Remote,UK-wide"),
@@ -367,8 +377,11 @@ BUSINESS_FIELDS = [
 @app.route("/admin/business/", methods=["GET", "POST"])
 def admin_business():
     if request.method == "POST":
-        for key, *_ in BUSINESS_FIELDS:
-            set_cfg(key, request.form.get(key, ""))
+        for key, _, ftype, _ in BUSINESS_FIELDS:
+            if ftype == "checkbox":
+                set_cfg(key, "1" if request.form.get(key) in ("1", "on", "true") else "")
+            else:
+                set_cfg(key, request.form.get(key, ""))
 
         menu_logo_file = request.files.get("menu_logo_file")
         main_logo_file = request.files.get("main_logo_file")

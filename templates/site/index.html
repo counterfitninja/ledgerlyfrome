@@ -16,15 +16,18 @@
 
 {% set menu_logo = cfg['menu_logo'] or 'logo.png' %}
 {% set main_logo = cfg['main_logo'] or 'logo.png' %}
-{% set bg_transition_start = cfg['bg_transition_start'] or '#fbf8f3' %}
-{% set bg_transition_end = cfg['bg_transition_end'] or '#f2f7f2' %}
-
-<style>
-  :root {
-    --bg-transition-start: {{ bg_transition_start }};
-    --bg-transition-end: {{ bg_transition_end }};
-  }
-</style>
+{% set services_transition_enabled = cfg['section_transition_services_enabled'] == '1' %}
+{% set services_transition_color = cfg['section_transition_services_color'] or '#edf7f2' %}
+{% set about_transition_enabled = cfg['section_transition_about_enabled'] == '1' %}
+{% set about_transition_color = cfg['section_transition_about_color'] or '#edf7f2' %}
+{% set hiw_transition_enabled = cfg['section_transition_hiw_enabled'] == '1' %}
+{% set hiw_transition_color = cfg['section_transition_hiw_color'] or '#edf7f2' %}
+{% set reviews_transition_enabled = cfg['section_transition_reviews_enabled'] == '1' %}
+{% set reviews_transition_color = cfg['section_transition_reviews_color'] or '#edf7f2' %}
+{% set faq_transition_enabled = cfg['section_transition_faq_enabled'] == '1' %}
+{% set faq_transition_color = cfg['section_transition_faq_color'] or '#edf7f2' %}
+{% set contact_transition_enabled = cfg['section_transition_contact_enabled'] == '1' %}
+{% set contact_transition_color = cfg['section_transition_contact_color'] or '#edf7f2' %}
 
 <!-- ── Navigation ──────────────────────────────────────────────────────── -->
 <header class="nav" id="nav">
@@ -83,7 +86,7 @@
 </section>
 
 <!-- ── Services ────────────────────────────────────────────────────────── -->
-<section class="services" id="services">
+<section class="services{% if services_transition_enabled %} section-transition{% endif %}" id="services"{% if services_transition_enabled %} style="--section-transition-color: {{ services_transition_color }};"{% endif %}>
   <div class="container">
     <div class="section-header">
       <h2 class="section-heading">{{ cfg['services_heading'] }}</h2>
@@ -102,7 +105,7 @@
 </section>
 
 <!-- ── About ────────────────────────────────────────────────────────────── -->
-<section class="about" id="about">
+<section class="about{% if about_transition_enabled %} section-transition{% endif %}" id="about"{% if about_transition_enabled %} style="--section-transition-color: {{ about_transition_color }};"{% endif %}>
   <div class="container about__inner">
     <div class="about__visual" aria-hidden="true">
       <div class="about__panel">
@@ -133,7 +136,7 @@
 </section>
 
 <!-- ── How It Works ─────────────────────────────────────────────────────── -->
-<section class="how-it-works" id="how-it-works">
+<section class="how-it-works{% if hiw_transition_enabled %} section-transition{% endif %}" id="how-it-works"{% if hiw_transition_enabled %} style="--section-transition-color: {{ hiw_transition_color }};"{% endif %}>
   <div class="container">
     <div class="section-header">
       <h2 class="section-heading">{{ cfg['hiw_heading'] }}</h2>
@@ -152,7 +155,7 @@
 </section>
 
 <!-- ── Reviews ──────────────────────────────────────────────────────────── -->
-<section class="reviews" id="reviews">
+<section class="reviews{% if reviews_transition_enabled %} section-transition{% endif %}" id="reviews"{% if reviews_transition_enabled %} style="--section-transition-color: {{ reviews_transition_color }};"{% endif %}>
   <div class="container">
     <div class="section-header">
       <h2 class="section-heading">What our clients say.</h2>
@@ -180,7 +183,7 @@
 </section>
 
 <!-- ── FAQ ──────────────────────────────────────────────────────────────── -->
-<section class="faq" id="faq">
+<section class="faq{% if faq_transition_enabled %} section-transition{% endif %}" id="faq"{% if faq_transition_enabled %} style="--section-transition-color: {{ faq_transition_color }};"{% endif %}>
   <div class="container">
     <div class="section-header">
       <h2 class="section-heading">{{ cfg['faq_heading'] }}</h2>
@@ -201,7 +204,7 @@
 </section>
 
 <!-- ── Contact ──────────────────────────────────────────────────────────── -->
-<section class="contact" id="contact">
+<section class="contact{% if contact_transition_enabled %} section-transition{% endif %}" id="contact"{% if contact_transition_enabled %} style="--section-transition-color: {{ contact_transition_color }};"{% endif %}>
   <div class="container">
     <div class="section-header">
       <h2 class="section-heading">{{ cfg['contact_heading'] }}</h2>

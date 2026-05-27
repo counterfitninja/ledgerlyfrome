@@ -394,6 +394,10 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.05));
 }
 
+.section-transition {
+  background: linear-gradient(180deg, #ffffff 0%, var(--section-transition-color, #edf7f2) 100%) !important;
+}
+
 .about__inner {
   display: grid;
   grid-template-columns: minmax(300px, 0.92fr) minmax(0, 1.08fr);

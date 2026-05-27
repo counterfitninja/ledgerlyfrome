@@ -11,16 +11,44 @@
 
   <div class="adm-card">
     <div class="adm-card__title">Business Details</div>
-    {% for key, label, ftype, help in fields if key in ['business_name','phone','email','hours','location','bg_transition_start','bg_transition_end'] %}
+    {% for key, label, ftype, help in fields if key in ['business_name','phone','email','hours','location'] %}
     <div class="adm-form-group">
       <label for="{{ key }}">{{ label }}</label>
       {% if ftype == 'textarea' %}
         <textarea id="{{ key }}" name="{{ key }}" rows="3">{{ cfg[key] }}</textarea>
+      {% elif ftype == 'checkbox' %}
+        <label class="adm-checkbox-row">
+          <input type="checkbox" id="{{ key }}" name="{{ key }}" value="1" {% if cfg[key] in ['1', 'on', 'true'] %}checked{% endif %} />
+          <span>Enabled</span>
+        </label>
       {% else %}
         {% set field_value = cfg[key] %}
-        {% if ftype == 'color' and not field_value %}
-          {% set field_value = '#fbf8f3' if key == 'bg_transition_start' else '#f2f7f2' %}
-        {% endif %}
+        <input type="{{ 'color' if ftype == 'color' else 'text' }}" id="{{ key }}" name="{{ key }}" value="{{ field_value }}" />
+      {% endif %}
+      {% if help %}<p class="adm-help">{{ help }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="adm-card">
+    <div class="adm-card__title">Section Background Transitions</div>
+    {% for key, label, ftype, help in fields if key in [
+      'section_transition_services_enabled','section_transition_services_color',
+      'section_transition_about_enabled','section_transition_about_color',
+      'section_transition_hiw_enabled','section_transition_hiw_color',
+      'section_transition_reviews_enabled','section_transition_reviews_color',
+      'section_transition_faq_enabled','section_transition_faq_color',
+      'section_transition_contact_enabled','section_transition_contact_color'
+    ] %}
+    <div class="adm-form-group">
+      <label for="{{ key }}">{{ label }}</label>
+      {% if ftype == 'checkbox' %}
+        <label class="adm-checkbox-row">
+          <input type="checkbox" id="{{ key }}" name="{{ key }}" value="1" {% if cfg[key] in ['1', 'on', 'true'] %}checked{% endif %} />
+          <span>Enabled</span>
+        </label>
+      {% else %}
+        {% set field_value = cfg[key] or '#edf7f2' %}
         <input type="{{ 'color' if ftype == 'color' else 'text' }}" id="{{ key }}" name="{{ key }}" value="{{ field_value }}" />
       {% endif %}
       {% if help %}<p class="adm-help">{{ help }}</p>{% endif %}
