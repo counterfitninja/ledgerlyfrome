@@ -97,7 +97,9 @@
     <div class="services__grid">
       {% for s in services %}
       <article class="service-card">
-        <div class="service-card__icon">{{ s.icon }}</div>
+        {% if s.icon|trim %}
+        <div class="service-card__icon" aria-hidden="true">{{ s.icon }}</div>
+        {% endif %}
         <h3>{{ s.title }}</h3>
         <p>{{ s.description }}</p>
       </article>
