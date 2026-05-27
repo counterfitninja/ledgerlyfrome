@@ -278,7 +278,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 
 .hero__brand-logo {
   width: clamp(170px, 20vw, 240px);
-  justify-self: end;
+  justify-self: center;
 }
 
 .hero__aside-tagline {
