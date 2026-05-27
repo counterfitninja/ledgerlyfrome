@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
 
   <div class="adm-card">
     <div class="adm-card__title">Business Details</div>
@@ -22,6 +22,38 @@
       {% if help %}<p class="adm-help">{{ help }}</p>{% endif %}
     </div>
     {% endfor %}
+  </div>
+
+  <div class="adm-card">
+    <div class="adm-card__title">Logos</div>
+
+    <div class="adm-form-group">
+      <label for="menu_logo_file">Menu Logo (navigation)</label>
+      {% set menu_logo = cfg['menu_logo'] or 'logo.png' %}
+      <div class="adm-logo-preview-wrap">
+        <img src="{{ url_for('static', filename=menu_logo) }}" alt="Current menu logo" class="adm-logo-preview" />
+      </div>
+      <input type="file" id="menu_logo_file" name="menu_logo_file" accept=".png,.jpg,.jpeg,.webp,.gif,.svg,image/*" />
+      <label class="adm-checkbox-row" style="margin-top:.5rem">
+        <input type="checkbox" name="menu_logo_remove" value="1" />
+        <span>Remove custom menu logo (use default)</span>
+      </label>
+      <p class="adm-help">Upload a logo used in the top navigation menu.</p>
+    </div>
+
+    <div class="adm-form-group">
+      <label for="main_logo_file">Main Page Logo (hero + footer)</label>
+      {% set main_logo = cfg['main_logo'] or 'logo.png' %}
+      <div class="adm-logo-preview-wrap">
+        <img src="{{ url_for('static', filename=main_logo) }}" alt="Current main page logo" class="adm-logo-preview" />
+      </div>
+      <input type="file" id="main_logo_file" name="main_logo_file" accept=".png,.jpg,.jpeg,.webp,.gif,.svg,image/*" />
+      <label class="adm-checkbox-row" style="margin-top:.5rem">
+        <input type="checkbox" name="main_logo_remove" value="1" />
+        <span>Remove custom main page logo (use default)</span>
+      </label>
+      <p class="adm-help">Upload a separate logo used on the main page hero and footer.</p>
+    </div>
   </div>
 
   <div class="adm-card">

@@ -14,11 +14,14 @@
 </head>
 <body>
 
+{% set menu_logo = cfg['menu_logo'] or 'logo.png' %}
+{% set main_logo = cfg['main_logo'] or 'logo.png' %}
+
 <!-- ── Navigation ──────────────────────────────────────────────────────── -->
 <header class="nav" id="nav">
   <div class="container nav__inner">
     <a href="#" class="nav__logo">
-      <img src="{{ url_for('static', filename='logo.png') }}" alt="{{ cfg['business_name'] }}" class="nav__logo-img nav__logo-img--mark" />
+      <img src="{{ url_for('static', filename=menu_logo) }}" alt="{{ cfg['business_name'] }}" class="nav__logo-img nav__logo-img--mark" />
     </a>
     <nav class="nav__links" aria-label="Main navigation">
       <a href="#about">About</a>
@@ -60,7 +63,7 @@
       </div>
     </div>
     <aside class="hero__aside" aria-label="Business summary">
-      <img src="{{ url_for('static', filename='logo.png') }}" alt="{{ cfg['business_name'] }}" class="hero__brand-logo" />
+      <img src="{{ url_for('static', filename=main_logo) }}" alt="{{ cfg['business_name'] }}" class="hero__brand-logo" />
     </aside>
   </div>
   <div class="container hero__badges">
@@ -282,7 +285,7 @@
   <div class="container">
     <div class="footer__inner">
       <div class="footer__brand">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="{{ cfg['business_name'] }}" class="footer__logo-img" />
+        <img src="{{ url_for('static', filename=main_logo) }}" alt="{{ cfg['business_name'] }}" class="footer__logo-img" />
         <p>{{ cfg['tagline'] }}</p>
       </div>
       <div class="footer__col">

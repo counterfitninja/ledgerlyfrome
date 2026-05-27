@@ -1,5 +1,6 @@
 import os
 import json
+import uuid
 from collections import defaultdict
 from urllib import error as urllib_error
 from urllib import parse as urllib_parse
@@ -10,6 +11,7 @@ from flask import (
     url_for, flash, abort, session,
 )
 from flask_mail import Mail, Message
+from werkzeug.utils import secure_filename
 from models import (
     db, SiteConfig, Service, Testimonial,
     FaqItem, HowItWorksStep, AboutPoint,
@@ -79,6 +81,36 @@ def set_cfg(key, value):
         row.value = value
     else:
         db.session.add(SiteConfig(key=key, value=value))
+
+
+ALLOWED_LOGO_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif", "svg"}
+
+
+def _is_allowed_logo(filename):
+    if not filename or "." not in filename:
+        return False
+    ext = filename.rsplit(".", 1)[1].lower()
+    return ext in ALLOWED_LOGO_EXTENSIONS
+
+
+def _save_logo_upload(file_storage, prefix):
+    """Save an uploaded logo under static/uploads and return the relative static path."""
+    filename = secure_filename(file_storage.filename or "")
+    if not _is_allowed_logo(filename):
+        return None
+
+    ext = filename.rsplit(".", 1)[1].lower()
+    unique_name = f"{prefix}-{uuid.uuid4().hex}.{ext}"
+
+    static_dir = os.path.join(app.root_path, "static")
+    uploads_dir = os.path.join(static_dir, "uploads")
+    os.makedirs(uploads_dir, exist_ok=True)
+
+    full_path = os.path.join(uploads_dir, unique_name)
+    file_storage.save(full_path)
+
+    # Store path relative to /static for easy url_for('static', filename=...)
+    return f"uploads/{unique_name}"
 
 
 def site_context():
@@ -335,6 +367,29 @@ def admin_business():
     if request.method == "POST":
         for key, *_ in BUSINESS_FIELDS:
             set_cfg(key, request.form.get(key, ""))
+
+        menu_logo_file = request.files.get("menu_logo_file")
+        main_logo_file = request.files.get("main_logo_file")
+
+        if request.form.get("menu_logo_remove") == "1":
+            set_cfg("menu_logo", "")
+        if request.form.get("main_logo_remove") == "1":
+            set_cfg("main_logo", "")
+
+        if menu_logo_file and menu_logo_file.filename:
+            menu_logo_path = _save_logo_upload(menu_logo_file, "menu-logo")
+            if menu_logo_path:
+                set_cfg("menu_logo", menu_logo_path)
+            else:
+                flash("Menu logo must be an image file: png, jpg, jpeg, webp, gif, or svg.", "error")
+
+        if main_logo_file and main_logo_file.filename:
+            main_logo_path = _save_logo_upload(main_logo_file, "main-logo")
+            if main_logo_path:
+                set_cfg("main_logo", main_logo_path)
+            else:
+                flash("Main page logo must be an image file: png, jpg, jpeg, webp, gif, or svg.", "error")
+
         db.session.commit()
         flash("Business settings saved.", "success")
         return redirect(url_for("admin_business"))

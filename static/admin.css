@@ -225,6 +225,7 @@ a:hover { text-decoration: underline; }
 .adm-form-group input[type=text],
 .adm-form-group input[type=number],
 .adm-form-group input[type=email],
+.adm-form-group input[type=file],
 .adm-form-group textarea {
   width: 100%;
   padding: .6rem .9rem;
@@ -244,6 +245,24 @@ a:hover { text-decoration: underline; }
 }
 .adm-form-group textarea { resize: vertical; min-height: 90px; }
 .adm-form-group input[type=number] { width: 100px; }
+
+.adm-logo-preview-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70px;
+  padding: .5rem;
+  border: 1px dashed var(--adm-border);
+  border-radius: var(--adm-radius);
+  background: #fff;
+  margin-bottom: .6rem;
+}
+
+.adm-logo-preview {
+  max-height: 56px;
+  max-width: 240px;
+  object-fit: contain;
+}
 
 .adm-checkbox-row {
   display: flex;
