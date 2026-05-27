@@ -847,6 +847,15 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
     padding-block: 1.5rem 2.5rem;
   }
 
+  .hero__aside {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .hero__aside .hero__ctas {
+    justify-content: center;
+  }
+
   .hero h1,
   .section-heading {
     max-width: none;
