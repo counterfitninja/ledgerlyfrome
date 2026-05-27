@@ -261,11 +261,16 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   margin-top: 2rem;
 }
 
+.hero__aside .hero__ctas {
+  margin-top: 0;
+  justify-content: flex-end;
+}
+
 .hero__aside {
   align-self: start;
   justify-self: end;
   display: grid;
-  gap: 0.5rem;
+  gap: 1.1rem;
   padding-top: 0.2rem;
   text-align: right;
 }
@@ -811,6 +816,10 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 
   .hero__brand-logo {
     justify-self: start;
+  }
+
+  .hero__aside .hero__ctas {
+    justify-content: flex-start;
   }
 
   .services__grid,
