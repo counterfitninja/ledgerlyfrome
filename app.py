@@ -341,6 +341,8 @@ BUSINESS_FIELDS = [
     ("email",             "Email",                "text",     ""),
     ("hours",             "Office Hours",         "text",     "e.g. Mon–Fri, 9am–5pm"),
     ("location",          "Location / Area",      "text",     "e.g. Frome, Somerset — serving clients UK-wide"),
+    ("bg_transition_start", "Background Start Color", "color",   "Top gradient color for the page background"),
+    ("bg_transition_end",   "Background End Color",   "color",   "Bottom gradient color for the page background"),
     ("hero_heading",      "Hero Heading",         "text",     "HTML allowed — use <br> for line break"),
     ("hero_sub",          "Hero Sub-heading",     "textarea", ""),
     ("hero_badges",       "Hero Badges",          "text",     "Comma-separated, e.g. 100% Remote,UK-wide"),

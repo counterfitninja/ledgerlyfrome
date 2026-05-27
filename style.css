@@ -3,6 +3,8 @@
 :root {
   --bg-page: #f7f3ec;
   --bg-soft: #edf7f2;
+  --bg-transition-start: #fbf8f3;
+  --bg-transition-end: #f2f7f2;
   --bg-card: rgba(255, 255, 255, 0.74);
   --bg-card-strong: rgba(255, 255, 255, 0.9);
   --ink-900: #171714;
@@ -35,7 +37,7 @@ body {
   color: var(--ink-700);
   background:
     radial-gradient(circle at top right, rgba(111, 204, 183, 0.18), transparent 28%),
-    linear-gradient(180deg, #fbf8f3 0%, #f7f4ee 30%, #f2f7f2 100%);
+    linear-gradient(180deg, var(--bg-transition-start) 0%, #f7f4ee 30%, var(--bg-transition-end) 100%);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -840,11 +842,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   }
 
   .hero__ctas {
-    flex-direction: column;
-  }
-
-  .hero__ctas .btn {
-    width: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
   }
 
   .reviews__track {

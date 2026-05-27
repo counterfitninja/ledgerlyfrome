@@ -35,6 +35,8 @@ def _seed_config():
     _set("email",            "ledgerlyy@gmail.com")
     _set("hours",            "Mon–Fri, 9am–5pm")
     _set("location",         "Frome, Somerset — serving clients across the UK")
+    _set("bg_transition_start", "#fbf8f3")
+    _set("bg_transition_end",   "#f2f7f2")
     _set("meta_title",       "Ledgerly — Professional Bookkeeping in Frome & across the UK")
     _set("meta_description", "Reliable, remote bookkeeping for sole traders and small limited companies. Fixed-price packages. Based in Frome, Somerset.")
     _set("hero_heading",     "Clean Books.<br>Clear Mind.")

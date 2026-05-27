@@ -16,6 +16,15 @@
 
 {% set menu_logo = cfg['menu_logo'] or 'logo.png' %}
 {% set main_logo = cfg['main_logo'] or 'logo.png' %}
+{% set bg_transition_start = cfg['bg_transition_start'] or '#fbf8f3' %}
+{% set bg_transition_end = cfg['bg_transition_end'] or '#f2f7f2' %}
+
+<style>
+  :root {
+    --bg-transition-start: {{ bg_transition_start }};
+    --bg-transition-end: {{ bg_transition_end }};
+  }
+</style>
 
 <!-- ── Navigation ──────────────────────────────────────────────────────── -->
 <header class="nav" id="nav">

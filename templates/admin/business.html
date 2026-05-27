@@ -11,13 +11,17 @@
 
   <div class="adm-card">
     <div class="adm-card__title">Business Details</div>
-    {% for key, label, ftype, help in fields if key in ['business_name','phone','email','hours','location'] %}
+    {% for key, label, ftype, help in fields if key in ['business_name','phone','email','hours','location','bg_transition_start','bg_transition_end'] %}
     <div class="adm-form-group">
       <label for="{{ key }}">{{ label }}</label>
       {% if ftype == 'textarea' %}
         <textarea id="{{ key }}" name="{{ key }}" rows="3">{{ cfg[key] }}</textarea>
       {% else %}
-        <input type="text" id="{{ key }}" name="{{ key }}" value="{{ cfg[key] }}" />
+        {% set field_value = cfg[key] %}
+        {% if ftype == 'color' and not field_value %}
+          {% set field_value = '#fbf8f3' if key == 'bg_transition_start' else '#f2f7f2' %}
+        {% endif %}
+        <input type="{{ 'color' if ftype == 'color' else 'text' }}" id="{{ key }}" name="{{ key }}" value="{{ field_value }}" />
       {% endif %}
       {% if help %}<p class="adm-help">{{ help }}</p>{% endif %}
     </div>
