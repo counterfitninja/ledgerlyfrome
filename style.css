@@ -395,7 +395,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 .section-transition {
-  background: linear-gradient(180deg, #ffffff 0%, var(--section-transition-color, #edf7f2) 100%) !important;
+  background:
+    radial-gradient(circle at 78% 35%, rgba(87, 188, 164, 0.28), transparent 0 22%),
+    linear-gradient(110deg, #ffffff 0%, var(--section-transition-color, #edf7f2) 100%) !important;
 }
 
 .about__inner {
