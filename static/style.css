@@ -856,6 +856,10 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
     justify-content: center;
   }
 
+  .hero__brand-logo {
+    justify-self: center;
+  }
+
   .hero h1,
   .section-heading {
     max-width: none;
