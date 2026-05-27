@@ -849,6 +849,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 
   .hero__aside {
     justify-items: center;
+    justify-self: center;
     text-align: center;
   }
 
