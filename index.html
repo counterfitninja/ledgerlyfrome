@@ -3,224 +3,499 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- =====================================================
-       EDIT: Page title & meta description (shown in Google)
-       ===================================================== -->
   <title>Ledgerly — Professional Bookkeeping in Frome &amp; across the UK</title>
-  <meta name="description" content="Reliable, remote bookkeeping for sole traders and small limited companies. Fixed-price packages. Based in Frome, Somerset — serving clients UK-wide." />
-
-  <!-- Fonts -->
+  <meta name="description" content="Reliable, remote bookkeeping for sole traders and small limited companies. Fixed-price packages. Based in Frome, Somerset." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="static/style.css" />
+  <link rel="icon" type="image/x-icon" href="static/favicon.ico" />
+  <link rel="apple-touch-icon" href="static/logo-icon.png" />
 </head>
 <body>
 
-  <!-- ╔══════════════════════════════════════════════════╗
-       ║  NAVIGATION                                      ║
-       ╚══════════════════════════════════════════════════╝ -->
-  <header class="nav" id="nav">
-    <div class="container nav__inner">
-      <a href="#" class="nav__logo" id="nav-logo">Ledgerly</a>
-      <nav class="nav__links" id="nav-links" aria-label="Main navigation"></nav>
-      <a href="#contact" class="btn btn-primary nav__cta" id="nav-cta">Get a Free Quote</a>
-      <button class="nav__hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-    <div class="nav__mobile" id="mobile-menu" role="navigation" aria-label="Mobile navigation"></div>
-  </header>
+<!-- ── Navigation ──────────────────────────────────────────────────────── -->
+<header class="nav" id="nav">
+  <div class="container nav__inner">
+    <a href="#" class="nav__logo">
+      <img src="static/logo.png" alt="Ledgerly" class="nav__logo-img nav__logo-img--mark" />
+    </a>
+    <nav class="nav__links" aria-label="Main navigation">
+      <a href="#about">About</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#reviews">Testimonials</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="btn btn-primary nav__cta">Get a Free Quote</a>
+    <button class="nav__hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav__mobile" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+    <a href="#about">About</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#reviews">Testimonials</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="btn btn-primary">Get a Free Quote</a>
+  </div>
+</header>
 
-  <main>
+<main>
 
-    <!-- ╔══════════════════════════════════════════════════╗
-         ║  HERO                                            ║
-         ╚══════════════════════════════════════════════════╝ -->
-    <section class="hero" id="hero">
-      <div class="container hero__inner">
-        <h1 id="hero-heading"></h1>
-        <p class="hero__sub" id="hero-sub"></p>
-        <div class="hero__badges" id="hero-badges"></div>
-        <div class="hero__ctas" id="hero-ctas"></div>
-      </div>
-    </section>
-
-    <!-- ╔══════════════════════════════════════════════════╗
-         ║  SERVICES                                        ║
-         ╚══════════════════════════════════════════════════╝ -->
-    <section class="services" id="services">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-heading" id="services-heading"></h2>
-          <p class="section-sub"     id="services-sub"></p>
-        </div>
-        <div class="services__grid" id="services-grid"></div>
-      </div>
-    </section>
-
-    <!-- ╔══════════════════════════════════════════════════╗
-         ║  ABOUT / WHY US                                  ║
-         ╚══════════════════════════════════════════════════╝ -->
-    <section class="about" id="about">
-      <div class="container about__inner">
-        <div class="about__text">
-          <h2 class="section-heading" id="about-heading"></h2>
-          <p class="section-sub"     id="about-sub"></p>
-          <p class="about__body"     id="about-body"></p>
-          <ul class="about__points"  id="about-points"></ul>
-        </div>
-        <div class="about__visual" id="about-visual" aria-hidden="true">
-          <div class="about__stat"><strong>100%</strong><span>Remote service</span></div>
-          <div class="about__stat"><strong>UK&#8209;wide</strong><span>Coverage</span></div>
-          <div class="about__stat"><strong>Fixed</strong><span>Transparent pricing</span></div>
-          <div class="about__stat"><strong>5★</strong><span>Client reviews</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ╔══════════════════════════════════════════════════╗
-         ║  HOW IT WORKS                                    ║
-         ╚══════════════════════════════════════════════════╝ -->
-    <section class="how-it-works" id="how-it-works">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-heading" id="hiw-heading"></h2>
-          <p class="section-sub"     id="hiw-sub"></p>
-        </div>
-        <div class="steps" id="steps"></div>
-      </div>
-    </section>
-
-    <!-- ╔══════════════════════════════════════════════════╗
-         ║  REVIEWS / TESTIMONIALS                          ║
-         ╚══════════════════════════════════════════════════╝ -->
-    <section class="reviews" id="reviews">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-heading" id="reviews-heading"></h2>
-          <p class="section-sub"     id="reviews-sub"></p>
-        </div>
-        <div class="reviews__grid" id="reviews-grid"></div>
-      </div>
-    </section>
-
-    <!-- ╔══════════════════════════════════════════════════╗
-         ║  FAQ                                             ║
-         ╚══════════════════════════════════════════════════╝ -->
-    <section class="faq" id="faq">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-heading" id="faq-heading"></h2>
-          <p class="section-sub"     id="faq-sub"></p>
-        </div>
-        <ul class="faq__list" id="faq-list"></ul>
-      </div>
-    </section>
-
-    <!-- ╔══════════════════════════════════════════════════╗
-         ║  CONTACT                                         ║
-         ╚══════════════════════════════════════════════════╝ -->
-    <section class="contact" id="contact">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-heading" id="contact-heading"></h2>
-          <p class="section-sub"     id="contact-sub"></p>
-        </div>
-        <div class="contact__inner">
-
-          <!-- Contact details -->
-          <div class="contact__info" id="contact-info">
-            <div class="contact__detail">
-              <span class="contact__detail-icon">📞</span>
-              <div>
-                <h4>Phone</h4>
-                <a id="contact-phone" href=""></a>
-              </div>
-            </div>
-            <div class="contact__detail">
-              <span class="contact__detail-icon">✉️</span>
-              <div>
-                <h4>Email</h4>
-                <a id="contact-email" href=""></a>
-              </div>
-            </div>
-            <div class="contact__detail">
-              <span class="contact__detail-icon">🕐</span>
-              <div>
-                <h4>Hours</h4>
-                <p id="contact-hours"></p>
-              </div>
-            </div>
-            <div class="contact__detail">
-              <span class="contact__detail-icon">📍</span>
-              <div>
-                <h4>Location</h4>
-                <p id="contact-location"></p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Contact form -->
-          <!-- NOTE: This form does nothing by default — connect to Formspree, Netlify Forms,
-               or similar to receive submissions. See script.js for instructions. -->
-          <div class="contact__form">
-            <form id="contact-form" novalidate>
-              <div id="form-fields"></div>
-              <button type="submit" class="btn btn-primary form-submit" id="form-submit"></button>
-            </form>
-            <div class="form-success" id="form-success">
-              ✅ Thanks! We'll be in touch within one business day.
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ╔══════════════════════════════════════════════════╗
-       ║  FOOTER                                          ║
-       ╚══════════════════════════════════════════════════╝ -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__inner">
-
-        <div class="footer__brand">
-          <div class="nav__logo" id="footer-logo"></div>
-          <p id="footer-tagline"></p>
-        </div>
-
-        <div class="footer__col">
-          <h4>Services</h4>
-          <ul id="footer-services"></ul>
-        </div>
-
-        <div class="footer__col">
-          <h4>Company</h4>
-          <ul id="footer-nav"></ul>
-        </div>
-
-        <div class="footer__col">
-          <h4>Contact</h4>
-          <ul id="footer-contact"></ul>
-        </div>
-
-      </div>
-
-      <div class="footer__bottom">
-        <p id="footer-copy"></p>
+<!-- ── Hero ────────────────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <p class="hero__eyebrow">Remote bookkeeping | Financial operations</p>
+      <h1>Books are there to be clean</h1>
+      <p class="hero__sub">Professional, reliable bookkeeping for UK sole traders and small limited companies.</p>
+      <div class="hero__ctas">
+        <a href="#contact" class="btn btn-primary">
+          Get a Free Quote
+        </a>
+        <a href="#services" class="btn btn-secondary">
+          See Our Services
+        </a>
       </div>
     </div>
-  </footer>
+    <aside class="hero__aside" aria-label="Business summary">
+      <img src="static/logo.png" alt="Ledgerly" class="hero__brand-logo" />
+      <p class="hero__aside-tagline">Bookkeeping | Financial Operations</p>
+    </aside>
+  </div>
+  <div class="container hero__badges">
+    
+    <span class="badge">100% Remote</span>
+    
+    <span class="badge">UK-wide coverage</span>
+    
+    <span class="badge">Accountant-ready records</span>
+    
+  </div>
+</section>
 
-  <!-- Content data -->
-  <script src="content.js"></script>
-  <!-- App logic (renders content + interactivity) -->
-  <script src="script.js"></script>
+<!-- ── Services ────────────────────────────────────────────────────────── -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">What We Do</h2>
+      <p class="section-sub">Everything your business needs to keep finances on track.</p>
+    </div>
+    <div class="services__grid">
+      
+      <article class="service-card">
+        <div class="service-card__icon">📒</div>
+        <h3>Day-to-Day Bookkeeping</h3>
+        <p>Accurate recording of all income and expenses, keeping your books up to date every month.</p>
+      </article>
+      
+      <article class="service-card">
+        <div class="service-card__icon">🏦</div>
+        <h3>Bank Reconciliations</h3>
+        <p>We match every transaction to your bank statements so nothing slips through the cracks.</p>
+      </article>
+      
+      <article class="service-card">
+        <div class="service-card__icon">🧾</div>
+        <h3>VAT Returns</h3>
+        <p>Preparation and submission of VAT returns, ensuring compliance and accuracy.</p>
+      </article>
+      
+      <article class="service-card">
+        <div class="service-card__icon">🏗️</div>
+        <h3>CIS Returns</h3>
+        <p>Full support for contractors and subcontractors with Construction Industry Scheme obligations.</p>
+      </article>
+      
+      <article class="service-card">
+        <div class="service-card__icon">💷</div>
+        <h3>Payroll Services</h3>
+        <p>Processing payroll and submitting RTI reports to HMRC on time, every time.</p>
+      </article>
+      
+      <article class="service-card">
+        <div class="service-card__icon">📝</div>
+        <h3>Self-Assessment Preparation</h3>
+        <p>We gather and organise your figures so your accountant can file quickly and accurately.</p>
+      </article>
+      
+      <article class="service-card">
+        <div class="service-card__icon">🏢</div>
+        <h3>Limited Company Accounts</h3>
+        <p>Year-end accounts preparation for small limited companies, accountant-ready.</p>
+      </article>
+      
+      <article class="service-card">
+        <div class="service-card__icon">💻</div>
+        <h3>Software Setup &amp; Support</h3>
+        <p>We set up and support QuickBooks, Xero, and other cloud accounting platforms.</p>
+      </article>
+      
+      <article class="service-card">
+        <div class="service-card__icon">📊</div>
+        <h3>Management Reports</h3>
+        <p>Clear monthly reports showing exactly how your business is performing financially.</p>
+      </article>
+      
+    </div>
+  </div>
+</section>
 
+<!-- ── About ────────────────────────────────────────────────────────────── -->
+<section class="about" id="about">
+  <div class="container about__inner">
+    <div class="about__visual" aria-hidden="true">
+      <div class="about__panel">
+        <div class="about__panel-glow"></div>
+        <div class="about__stat about__stat--primary"><strong>100%</strong><span>Remote services</span></div>
+        <div class="about__stat"><strong>UK-WIDE</strong><span>Coverage</span></div>
+        <div class="about__stat"><strong>FIXED</strong><span>Transparent pricing</span></div>
+        <div class="about__reviews">★★★★★ <span>Client reviews</span></div>
+      </div>
+    </div>
+    <div class="about__text">
+      <h2 class="section-heading">Why work with us?</h2>
+      <p class="section-sub">We take the stress out of your finances so you can focus on what you do best.</p>
+      <p class="about__body">Ledgerly provides reliable, efficient, and stress-free bookkeeping. We believe good bookkeeping shouldn&#39;t be complicated — plain-English communication, fixed transparent pricing, and a dedicated UK-based bookkeeper in your corner.</p>
+      <ul class="about__points">
+        
+        <li class="about-point">
+          <span class="about-point__icon">+</span>
+          <div>
+            <h4>No Year-End Surprises</h4>
+            <p>Monthly maintenance means nothing piles up.</p>
+          </div>
+        </li>
+        
+        <li class="about-point">
+          <span class="about-point__icon">+</span>
+          <div>
+            <h4>Lower Accountant Fees</h4>
+            <p>Clean, organised records reduce your accountant&#39;s time.</p>
+          </div>
+        </li>
+        
+        <li class="about-point">
+          <span class="about-point__icon">+</span>
+          <div>
+            <h4>Fully Remote</h4>
+            <p>We work with clients across the UK, all online.</p>
+          </div>
+        </li>
+        
+        <li class="about-point">
+          <span class="about-point__icon">+</span>
+          <div>
+            <h4>Plain-English Advice</h4>
+            <p>No jargon. We explain things in a way that makes sense.</p>
+          </div>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── How It Works ─────────────────────────────────────────────────────── -->
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">How It Works</h2>
+      <p class="section-sub">Getting started is simple. Here&#39;s what to expect.</p>
+    </div>
+    <div class="steps">
+      
+      <div class="step">
+        <div class="step__num">1</div>
+        <h3>Get in Touch</h3>
+        <p>Fill in the contact form or give us a call. No obligation.</p>
+      </div>
+      
+      <div class="step">
+        <div class="step__num">2</div>
+        <h3>Tailored Quote</h3>
+        <p>We&#39;ll prepare a fixed-price quote based on your transaction volume.</p>
+      </div>
+      
+      <div class="step">
+        <div class="step__num">3</div>
+        <h3>Setup &amp; Onboard</h3>
+        <p>We get access to your accounts and begin organising your books.</p>
+      </div>
+      
+      <div class="step">
+        <div class="step__num">4</div>
+        <h3>Ongoing Support</h3>
+        <p>Monthly bookkeeping, reports, and a dedicated point of contact.</p>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ── Reviews ──────────────────────────────────────────────────────────── -->
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">What our clients say.</h2>
+      <p class="section-sub">Real feedback from real businesses across the UK.</p>
+    </div>
+    <div class="reviews__carousel">
+    <div class="reviews__track" id="reviews-track">
+      
+      <article class="review-card">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">"My books have never been tidier. Ledgerly sorted out months of backlog and keeps everything running smoothly."</p>
+        <div class="review-card__author">
+          <strong>Sarah M.</strong>
+          <span>Freelance Designer, London</span>
+        </div>
+      </article>
+      
+      <article class="review-card">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">"I dreaded doing my accounts every year. Not any more — everything is just handled."</p>
+        <div class="review-card__author">
+          <strong>James K.</strong>
+          <span>Sole Trader, Manchester</span>
+        </div>
+      </article>
+      
+      <article class="review-card">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">"Zero stress at year end for the first time ever. My accountant noticed the difference immediately."</p>
+        <div class="review-card__author">
+          <strong>Priya L.</strong>
+          <span>Ltd Company Director, Birmingham</span>
+        </div>
+      </article>
+      
+      <article class="review-card">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">"Completely transformed how organised my finances are. I actually understand my numbers now."</p>
+        <div class="review-card__author">
+          <strong>Alex R.</strong>
+          <span>Consultant, Bristol</span>
+        </div>
+      </article>
+      
+      <article class="review-card">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">"Reduced my bookkeeping headaches massively. Highly recommended for any online business."</p>
+        <div class="review-card__author">
+          <strong>Emma T.</strong>
+          <span>E-commerce Owner, Leeds</span>
+        </div>
+      </article>
+      
+      <article class="review-card">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">"Clear pricing, responsive communication, and they really know their stuff with CIS."</p>
+        <div class="review-card__author">
+          <strong>Tom B.</strong>
+          <span>Contractor, Edinburgh</span>
+        </div>
+      </article>
+      
+    </div>
+    </div>
+    <div class="reviews__controls" aria-label="Testimonial navigation">
+      <button class="reviews__nav" type="button" data-review-scroll="prev" aria-label="Scroll testimonials left">←</button>
+      <button class="reviews__nav" type="button" data-review-scroll="next" aria-label="Scroll testimonials right">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ──────────────────────────────────────────────────────────────── -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">Frequently Asked Questions</h2>
+      <p class="section-sub">Can&#39;t find your answer? Just drop us a message.</p>
+    </div>
+    <ul class="faq__list">
+      
+      <li class="faq-item">
+        <button class="faq-item__q" aria-expanded="false">
+          What&#39;s the difference between a bookkeeper and an accountant?
+          <span class="arrow" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__a"><p>A bookkeeper records and organises your day-to-day financial transactions. An accountant typically uses that data to file tax returns and give strategic advice. We get your books in shape so your accountant can work faster (and cheaper).</p></div>
+      </li>
+      
+      <li class="faq-item">
+        <button class="faq-item__q" aria-expanded="false">
+          Do you work with clients outside Frome?
+          <span class="arrow" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__a"><p>Absolutely — we&#39;re fully remote and work with clients all across the UK. Everything is handled securely online.</p></div>
+      </li>
+      
+      <li class="faq-item">
+        <button class="faq-item__q" aria-expanded="false">
+          Which accounting software do you use?
+          <span class="arrow" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__a"><p>We primarily work with QuickBooks and Xero, but we&#39;re happy to work with your existing software or help you choose the right one.</p></div>
+      </li>
+      
+      <li class="faq-item">
+        <button class="faq-item__q" aria-expanded="false">
+          How much does it cost?
+          <span class="arrow" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__a"><p>Pricing is fixed and tailored to your business based on monthly transaction volume. We&#39;ll give you a clear quote before you commit — no hidden fees.</p></div>
+      </li>
+      
+      <li class="faq-item">
+        <button class="faq-item__q" aria-expanded="false">
+          Can you help if my books are behind?
+          <span class="arrow" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__a"><p>Yes — catch-up bookkeeping is something we do regularly. We&#39;ll work through the backlog and bring everything up to date.</p></div>
+      </li>
+      
+      <li class="faq-item">
+        <button class="faq-item__q" aria-expanded="false">
+          How do I get started?
+          <span class="arrow" aria-hidden="true"></span>
+        </button>
+        <div class="faq-item__a"><p>Simply fill in the contact form below or give us a call. We&#39;ll arrange a free, no-obligation chat to understand your needs.</p></div>
+      </li>
+      
+    </ul>
+  </div>
+</section>
+
+<!-- ── Contact ──────────────────────────────────────────────────────────── -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">Get in Touch</h2>
+      <p class="section-sub">Book a free call or drop us a message — we&#39;ll get back to you within one business day.</p>
+    </div>
+    <div class="contact__inner">
+
+      <!-- Details -->
+      <div class="contact__info">
+        <div class="contact__detail">
+          <span class="contact__detail-icon">📞</span>
+          <div>
+            <h4>Phone</h4>
+            <a href="tel:01326619114">01326 619114</a>
+          </div>
+        </div>
+        <div class="contact__detail">
+          <span class="contact__detail-icon">✉️</span>
+          <div>
+            <h4>Email</h4>
+            <a href="mailto:ledgerlyy@gmail.com">ledgerlyy@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact__detail">
+          <span class="contact__detail-icon">🕐</span>
+          <div><h4>Hours</h4><p>Mon–Fri, 9am–5pm</p></div>
+        </div>
+        <div class="contact__detail">
+          <span class="contact__detail-icon">📍</span>
+          <div><h4>Location</h4><p>Frome, Somerset — serving clients across the UK</p></div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      
+      
+        
+      
+      <div class="contact__form">
+        
+          
+        
+        <form action="mailto:ledgerlyy@gmail.com" method="POST">
+          <div class="form-group">
+            <label for="name">Your Name <span style="color:var(--mint-500)">*</span></label>
+            <input type="text" id="name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address <span style="color:var(--mint-500)">*</span></label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" />
+          </div>
+          <div class="form-group">
+            <label for="business">Business Type</label>
+            <input type="text" id="business" name="business" placeholder="e.g. Sole trader, Ltd company" />
+          </div>
+          <div class="form-group">
+            <label for="message">How can we help?</label>
+            <textarea id="message" name="message" rows="4"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary form-submit" style="width:100%;justify-content:center;padding:.9rem">
+            Send Message
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── Footer ───────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <img src="static/logo.png" alt="Ledgerly" class="footer__logo-img" />
+        <p>Clean Books. Clear Mind.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Services</h4>
+        <ul>
+          
+          <li><a href="#services">Day-to-Day Bookkeeping</a></li>
+          
+          <li><a href="#services">Bank Reconciliations</a></li>
+          
+          <li><a href="#services">VAT Returns</a></li>
+          
+          <li><a href="#services">CIS Returns</a></li>
+          
+          <li><a href="#services">Payroll Services</a></li>
+          
+          <li><a href="#services">Self-Assessment Preparation</a></li>
+          
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:01326619114">01326 619114</a></li>
+          <li><a href="mailto:ledgerlyy@gmail.com">ledgerlyy@gmail.com</a></li>
+          <li>Mon–Fri, 9am–5pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2025 Ledgerly. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="static/script.js"></script>
 </body>
 </html>
