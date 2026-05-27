@@ -112,14 +112,14 @@
     <div class="about__visual" aria-hidden="true">
       <div class="about__panel">
         <div class="about__panel-glow"></div>
-        <div class="about__stat about__stat--primary"><strong>100%</strong><span>Remote services</span></div>
-        <div class="about__stat"><strong>UK-WIDE</strong><span>Coverage</span></div>
-        <div class="about__stat"><strong>FIXED</strong><span>Transparent pricing</span></div>
-        <div class="about__reviews">★★★★★ <span>Client reviews</span></div>
+        <div class="about__stat about__stat--primary"><strong>{{ cfg['about_stat_1_value'] or '100%' }}</strong><span>{{ cfg['about_stat_1_label'] or 'Remote services' }}</span></div>
+        <div class="about__stat"><strong>{{ cfg['about_stat_2_value'] or 'UK-WIDE' }}</strong><span>{{ cfg['about_stat_2_label'] or 'Coverage' }}</span></div>
+        <div class="about__stat"><strong>{{ cfg['about_stat_3_value'] or 'FIXED' }}</strong><span>{{ cfg['about_stat_3_label'] or 'Transparent pricing' }}</span></div>
+        <div class="about__reviews">{{ cfg['about_reviews_stars'] or '★★★★★' }} <span>{{ cfg['about_reviews_label'] or 'Client reviews' }}</span></div>
       </div>
     </div>
     <div class="about__text">
-      <h2 class="section-heading">Why work with us?</h2>
+      <h2 class="section-heading">{{ cfg['about_heading'] or 'Why work with us?' }}</h2>
       <p class="section-sub">{{ cfg['about_sub'] }}</p>
       <p class="about__body">{{ cfg['about_body'] }}</p>
       <ul class="about__points">
