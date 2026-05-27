@@ -16,6 +16,8 @@
 
 {% set menu_logo = cfg['menu_logo'] or 'logo.png' %}
 {% set main_logo = cfg['main_logo'] or 'logo.png' %}
+{% set hero_transition_enabled = cfg['section_transition_hero_enabled'] == '1' %}
+{% set hero_transition_color = cfg['section_transition_hero_color'] or '#edf7f2' %}
 {% set services_transition_enabled = cfg['section_transition_services_enabled'] == '1' %}
 {% set services_transition_color = cfg['section_transition_services_color'] or '#edf7f2' %}
 {% set about_transition_enabled = cfg['section_transition_about_enabled'] == '1' %}
@@ -60,7 +62,7 @@
 <main>
 
 <!-- ── Hero ────────────────────────────────────────────────────────────── -->
-<section class="hero" id="hero">
+<section class="hero{% if hero_transition_enabled %} section-transition{% endif %}" id="hero"{% if hero_transition_enabled %} style="--section-transition-color: {{ hero_transition_color }};"{% endif %}>
   <div class="container hero__inner">
     <div class="hero__content">
       <h1>{{ cfg['hero_heading']|safe }}</h1>

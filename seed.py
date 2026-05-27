@@ -35,6 +35,8 @@ def _seed_config():
     _set("email",            "ledgerlyy@gmail.com")
     _set("hours",            "Mon–Fri, 9am–5pm")
     _set("location",         "Frome, Somerset — serving clients across the UK")
+    _set("section_transition_hero_enabled",     "")
+    _set("section_transition_hero_color",       "#edf7f2")
     _set("section_transition_services_enabled", "")
     _set("section_transition_services_color",   "#edf7f2")
     _set("section_transition_about_enabled",    "")
