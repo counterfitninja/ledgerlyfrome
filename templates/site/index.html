@@ -17,6 +17,7 @@
 {% set menu_logo = cfg['menu_logo'] or 'logo.png' %}
 {% set main_logo = cfg['main_logo'] or 'logo.png' %}
 {% set hero_text_enabled = cfg['hero_text_enabled'] not in ['0', 'false'] %}
+{% set hero_text_mobile_enabled = cfg['hero_text_mobile_enabled'] not in ['0', 'false'] %}
 {% set hero_transition_enabled = cfg['section_transition_hero_enabled'] == '1' %}
 {% set hero_transition_color = cfg['section_transition_hero_color'] or '#edf7f2' %}
 {% set services_transition_enabled = cfg['section_transition_services_enabled'] == '1' %}
@@ -64,7 +65,7 @@
 
 <!-- ── Hero ────────────────────────────────────────────────────────────── -->
 <section class="hero{% if hero_transition_enabled %} section-transition{% endif %}" id="hero"{% if hero_transition_enabled %} style="--section-transition-color: {{ hero_transition_color }};"{% endif %}>
-  <div class="container hero__inner{% if not hero_text_enabled %} hero__inner--no-copy{% endif %}">
+  <div class="container hero__inner{% if not hero_text_enabled %} hero__inner--no-copy{% endif %}{% if hero_text_enabled and not hero_text_mobile_enabled %} hero__inner--mobile-no-copy{% endif %}">
     <img src="{{ url_for('static', filename=main_logo) }}" alt="{{ cfg['business_name'] }}" class="hero__brand-logo" />
     {% if hero_text_enabled %}
     <div class="hero__content">

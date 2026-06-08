@@ -864,6 +864,14 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
     gap: 0.7rem;
   }
 
+  .hero__inner.hero__inner--mobile-no-copy {
+    gap: 0.7rem;
+  }
+
+  .hero__inner.hero__inner--mobile-no-copy .hero__content {
+    display: none;
+  }
+
   .hero__aside {
     justify-items: center;
     justify-self: center;
@@ -871,6 +879,10 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   }
 
   .hero__inner.hero__inner--no-copy .hero__aside {
+    margin-top: 0;
+  }
+
+  .hero__inner.hero__inner--mobile-no-copy .hero__aside {
     margin-top: 0;
   }
 
