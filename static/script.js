@@ -42,6 +42,21 @@ if (nav) {
   }, { passive: true });
 }
 
+/* ── Hero no-copy state (for static page parity) ─────────────────────────── */
+const heroInner = document.querySelector(".hero__inner");
+const heroContent = document.querySelector(".hero__content");
+if (heroInner && heroContent) {
+  const heading = heroContent.querySelector("h1");
+  const sub = heroContent.querySelector(".hero__sub");
+  const headingText = heading ? heading.textContent.trim() : "";
+  const subText = sub ? sub.textContent.trim() : "";
+
+  if (!headingText && !subText) {
+    heroInner.classList.add("hero__inner--no-copy");
+    heroContent.style.display = "none";
+  }
+}
+
 /* ── Reviews rail controls ───────────────────────────────────────────────── */
 const reviewsTrack = document.getElementById("reviews-track");
 const reviewControls = document.querySelectorAll("[data-review-scroll]");

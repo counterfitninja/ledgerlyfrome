@@ -106,11 +106,17 @@
 
   <div class="adm-card">
     <div class="adm-card__title">Hero Section (top of page)</div>
-    {% for key, label, ftype, help in fields if key in ['hero_heading','hero_sub','hero_badges','hero_cta1_label','hero_cta1_href','hero_cta2_label','hero_cta2_href'] %}
+    {% for key, label, ftype, help in fields if key in ['hero_text_enabled','hero_heading','hero_sub','hero_badges','hero_cta1_label','hero_cta1_href','hero_cta2_label','hero_cta2_href'] %}
     <div class="adm-form-group">
       <label for="{{ key }}">{{ label }}</label>
       {% if ftype == 'textarea' %}
         <textarea id="{{ key }}" name="{{ key }}" rows="3">{{ cfg[key] }}</textarea>
+      {% elif ftype == 'checkbox' %}
+        <input type="hidden" name="{{ key }}" value="0" />
+        <label class="adm-checkbox-row">
+          <input type="checkbox" id="{{ key }}" name="{{ key }}" value="1" {% if (key == 'hero_text_enabled' and cfg[key] not in ['0', 'false']) or (key != 'hero_text_enabled' and cfg[key] in ['1', 'on', 'true']) %}checked{% endif %} />
+          <span>Enabled</span>
+        </label>
       {% else %}
         <input type="text" id="{{ key }}" name="{{ key }}" value="{{ cfg[key] }}" />
       {% endif %}

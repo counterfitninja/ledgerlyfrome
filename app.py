@@ -355,6 +355,7 @@ BUSINESS_FIELDS = [
     ("section_transition_faq_color",        "FAQ Transition Color",        "color",    "End color for FAQ transition"),
     ("section_transition_contact_enabled",  "Contact Transition Enabled",  "checkbox", "Enable white to color transition for Contact"),
     ("section_transition_contact_color",    "Contact Transition Color",    "color",    "End color for Contact transition"),
+    ("hero_text_enabled", "Show Hero Text", "checkbox", "Toggle the hero heading and sub-heading on/off"),
     ("hero_heading",      "Hero Heading",         "text",     "HTML allowed — use <br> for line break"),
     ("hero_sub",          "Hero Sub-heading",     "textarea", ""),
     ("hero_badges",       "Hero Badges",          "text",     "Comma-separated, e.g. 100% Remote,UK-wide"),
@@ -389,7 +390,12 @@ def admin_business():
     if request.method == "POST":
         for key, _, ftype, _ in BUSINESS_FIELDS:
             if ftype == "checkbox":
-                set_cfg(key, "1" if request.form.get(key) in ("1", "on", "true") else "")
+                values = request.form.getlist(key)
+                enabled = any(v in ("1", "on", "true") for v in values)
+                if key == "hero_text_enabled":
+                    set_cfg(key, "1" if enabled else "0")
+                else:
+                    set_cfg(key, "1" if enabled else "")
             else:
                 set_cfg(key, request.form.get(key, ""))
 

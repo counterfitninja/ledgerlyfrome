@@ -860,10 +860,18 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
     padding-block: 1.5rem 2.5rem;
   }
 
+  .hero__inner.hero__inner--no-copy {
+    gap: 0.7rem;
+  }
+
   .hero__aside {
     justify-items: center;
     justify-self: center;
     text-align: center;
+  }
+
+  .hero__inner.hero__inner--no-copy .hero__aside {
+    margin-top: 0;
   }
 
   .hero__aside .hero__ctas {
