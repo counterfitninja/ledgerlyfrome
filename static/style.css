@@ -796,23 +796,16 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 @media (min-width: 981px) {
-  .hero__content {
-    justify-self: end;
-    text-align: right;
-  }
-
   .hero__brand-logo {
     width: clamp(340px, 40vw, 480px);
   }
 
   .hero h1 {
-    margin-left: auto;
     max-width: 16ch;
     font-size: clamp(1.8rem, 4.4vw, 2.8rem);
   }
 
   .hero__sub {
-    margin-left: auto;
     font-size: clamp(1rem, 2.1vw, 1.1rem);
   }
 }
