@@ -795,11 +795,12 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   }
 
   .hero h1 {
+    max-width: 16ch;
     font-size: clamp(1.8rem, 4.4vw, 2.8rem);
   }
 
   .hero__sub {
-    font-size: clamp(0.5rem, 1.05vw, 0.55rem);
+    font-size: clamp(1rem, 2.1vw, 1.1rem);
   }
 }
 
