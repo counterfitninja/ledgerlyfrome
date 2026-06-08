@@ -872,6 +872,15 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 
   .hero__brand-logo {
     justify-self: center;
+    width: clamp(212px, 25vw, 300px);
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 4.4vw, 2.8rem);
+  }
+
+  .hero__sub {
+    font-size: clamp(0.5rem, 1.05vw, 0.55rem);
   }
 
   .hero h1,
