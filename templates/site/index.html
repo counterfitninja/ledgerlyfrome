@@ -64,12 +64,12 @@
 <!-- ── Hero ────────────────────────────────────────────────────────────── -->
 <section class="hero{% if hero_transition_enabled %} section-transition{% endif %}" id="hero"{% if hero_transition_enabled %} style="--section-transition-color: {{ hero_transition_color }};"{% endif %}>
   <div class="container hero__inner">
+    <img src="{{ url_for('static', filename=main_logo) }}" alt="{{ cfg['business_name'] }}" class="hero__brand-logo" />
     <div class="hero__content">
       <h1>{{ cfg['hero_heading']|safe }}</h1>
       <p class="hero__sub">{{ cfg['hero_sub'] }}</p>
     </div>
     <aside class="hero__aside" aria-label="Business summary">
-      <img src="{{ url_for('static', filename=main_logo) }}" alt="{{ cfg['business_name'] }}" class="hero__brand-logo" />
       <div class="hero__ctas">
         <a href="{{ cfg['hero_cta1_href'] or '#contact' }}" class="btn btn-primary">
           {{ cfg['hero_cta1_label'] or 'Get a Free Quote' }}

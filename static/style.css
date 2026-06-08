@@ -220,12 +220,16 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(220px, 0.55fr);
+  grid-template-areas:
+    "content brand"
+    "content aside";
   gap: 2rem;
   align-items: start;
   padding-block: 2rem 3rem;
 }
 
 .hero__content {
+  grid-area: content;
   max-width: 42rem;
 }
 
@@ -267,6 +271,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 .hero__aside {
+  grid-area: aside;
   align-self: start;
   justify-self: end;
   display: grid;
@@ -277,6 +282,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 .hero__brand-logo {
+  grid-area: brand;
   width: clamp(170px, 20vw, 240px);
   justify-self: center;
 }
@@ -808,6 +814,13 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .contact__inner,
   .footer__inner {
     grid-template-columns: 1fr;
+  }
+
+  .hero__inner {
+    grid-template-areas:
+      "brand"
+      "content"
+      "aside";
   }
 
   .hero__aside {
