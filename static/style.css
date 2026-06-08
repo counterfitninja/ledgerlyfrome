@@ -872,7 +872,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 
   .hero__brand-logo {
     justify-self: center;
-    width: clamp(212px, 25vw, 300px);
+    width: clamp(265px, 31.25vw, 375px);
   }
 
   .hero h1 {
